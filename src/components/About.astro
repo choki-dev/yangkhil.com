@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { about } = site;
+---
+<section class="about" id="about" data-header-theme="light">
+  <span class="label" data-fade>{about.label}</span>
+  <div class="frame" data-parallax>
+    <Image src={about.image} alt={about.alt} widths={[500, 800, 1200]} sizes="(max-width: 767px) 100vw, 33vw" loading="lazy" />
+  </div>
+  <div class="about__text">
+    <h2 class="title-l" data-split>{about.title}</h2>
+    <div class="about__foot">
+      <p class="text" data-fade>{about.text}</p>
+      <Link href={about.link.href} label={about.link.label} />
+    </div>
+  </div>
+</section>

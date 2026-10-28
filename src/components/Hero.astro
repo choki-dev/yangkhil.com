@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { hero } = site;
+---
+<section class="hero full on-dark" id="top" data-header-theme="dark">
+  <div class="hero__slides shade">
+    {hero.slides.map((s, i) => (
+      <div class="hero__slide" data-hero-slide style={i === 0 ? undefined : 'opacity:0'}>
+        <Image src={s.image} alt={s.alt} widths={[900, 1600, 2000]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+      </div>
+    ))}
+  </div>
+  <div class="hero__copy">
+    <span class="label">{hero.label}</span>
+    <h1 data-split data-hero-title>
+      {hero.titleLines.map((l) => <span class="hero__line">{l}</span>)}
+    </h1>
+  </div>
+  <div class="hero__foot">
+    <p class="text" data-fade>{hero.text}</p>
+    <Link href={hero.link.href} label={hero.link.label} />
+  </div>
+</section>

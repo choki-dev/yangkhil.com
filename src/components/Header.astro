@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+---
+<header class="header" id="header">
+  <div class="header__bar">
+    <a class="header__logo" href="#top" aria-label={`${site.name} home`}>
+      <Image src={site.logo} alt={site.name} height={52} densities={[1, 2]} loading="eager" />
+    </a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+    <nav class="header__nav" id="menu" aria-label="Main" data-lenis-prevent>
+      <ul class="header__links">
+        {site.nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <a class="header__book" href={site.bookUrl}>Book now</a>
+    </nav>
+  </div>
+</header>

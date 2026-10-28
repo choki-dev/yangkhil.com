@@ -1,0 +1,10 @@
+---
+interface Props { href: string; label: string; class?: string }
+const { href, label, class: cls } = Astro.props;
+---
+<a class:list={['link', cls]} href={href} data-fade>
+  {label}
+  <span class="arrow" aria-hidden="true">
+    <svg viewBox="0 0 8 8" fill="none"><path d="M1 4h6M4.5 1.5 7 4 4.5 6.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </span>
+</a>

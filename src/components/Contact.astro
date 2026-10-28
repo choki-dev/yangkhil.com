@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+const { contact } = site;
+---
+<section class="contact full" id="contact" data-header-theme="dark">
+  <div class="frame fill shade" data-parallax>
+    <Image src={contact.image} alt={contact.alt} widths={[900, 1600, 2000]} sizes="100vw" loading="lazy" />
+  </div>
+  <div class="contact__card">
+    <span class="label">{contact.label}</span>
+    <div class="contact__map">
+      <iframe src={contact.map} title="Map showing Yangkhil Resort in Trongsa" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+    <div class="contact__bottom">
+      <h2 class="title-l" data-split>{contact.title}</h2>
+      <address class="contact__details" data-fade>
+        {contact.details.map((d) => (d.href ? <a href={d.href}>{d.text}</a> : <span>{d.text}</span>))}
+      </address>
+    </div>
+  </div>
+</section>

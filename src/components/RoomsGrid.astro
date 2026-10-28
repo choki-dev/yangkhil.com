@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { roomsSection: r } = site;
+---
+<section class="rooms" id="our-rooms" data-header-theme="light">
+  <span class="label" data-fade>{r.label}</span>
+  <div class="rooms__head">
+    <h2 class="title-l" data-split>{r.title}</h2>
+    <p class="text rooms__text" data-fade>{r.text}</p>
+  </div>
+  <ul class="rooms__grid">
+    {r.rooms.map((room) => (
+      <li class="room">
+        <a href="#contact" class="room__link" aria-label={`Enquire about ${room.name}`}>
+          <div class="frame room__img">
+            <Image src={room.image} alt={room.alt} widths={[400, 700, 1000]} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 50vw, 25vw" loading="lazy" />
+          </div>
+          <div class="room__info">
+            <h3 class="title-m">{room.name}</h3>
+            <span class="label">{room.guests} &middot; {room.bed}</span>
+          </div>
+        </a>
+        <Link href="#contact" label="Enquire" />
+      </li>
+    ))}
+  </ul>
+</section>

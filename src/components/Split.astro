@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { split } = site;
+---
+<section class="split full" id="sustainability" data-header-theme="dark">
+  <div class="frame" data-parallax>
+    <Image src={split.image} alt={split.alt} widths={[600, 1000, 1400]} sizes="(max-width: 767px) 100vw, 50vw" loading="lazy" />
+  </div>
+  <div class="split__panel">
+    <h2 class="title-l" data-split>{split.title}</h2>
+    <div class="foot">
+      <p class="text" data-fade>{split.text}</p>
+      <Link href={split.link.href} label={split.link.label} />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+---
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { retreat } = site;
+---
+<section class="retreat" data-header-theme="light">
+  <span class="label" data-fade>{retreat.label}</span>
+  <div class="retreat__body">
+    <h2 class="title-l" data-split>{retreat.title}</h2>
+    <div class="retreat__foot">
+      <p class="text" data-fade>{retreat.text}</p>
+      <Link href={retreat.link.href} label={retreat.link.label} />
+    </div>
+  </div>
+</section>
