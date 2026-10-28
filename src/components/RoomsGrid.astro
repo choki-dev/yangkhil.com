@@ -15,7 +15,7 @@ const { roomsSection: r } = site;
       <li class="room">
         <a href="#contact" class="room__link" aria-label={`Enquire about ${room.name}`}>
           <div class="frame room__img">
-            <Image src={room.image} alt={room.alt} widths={[400, 700, 1000]} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 50vw, 25vw" loading="lazy" />
+            <Image src={room.image} alt={room.alt} widths={[400, 700, 1000]} quality={70} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 50vw, 25vw" loading="lazy" />
           </div>
           <div class="room__info">
             <h3 class="title-m">{room.name}</h3>

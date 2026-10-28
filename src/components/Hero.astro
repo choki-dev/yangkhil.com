@@ -1,14 +1,23 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Link from './Link.astro';
 import { site } from '../data/site';
 const { hero } = site;
+const widths = [900, 1400, 1920];
+const quality = 70;
+// slides after the first are fetched by main.ts once the page has loaded,
+// so they don't compete with the first slide for bandwidth
+const later = await Promise.all(hero.slides.slice(1).map((s) => getImage({ src: s.image, widths, quality, format: 'webp' })));
 ---
 <section class="hero full on-dark" id="top" data-header-theme="dark">
   <div class="hero__slides shade">
     {hero.slides.map((s, i) => (
       <div class="hero__slide" data-hero-slide style={i === 0 ? undefined : 'opacity:0'}>
-        <Image src={s.image} alt={s.alt} widths={[900, 1600, 2000]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+        {i === 0 ? (
+          <Image src={s.image} alt={s.alt} widths={widths} quality={quality} sizes="100vw" loading="eager" fetchpriority="high" />
+        ) : (
+          <img data-src={later[i - 1].src} data-srcset={later[i - 1].srcSet.attribute} sizes="100vw" alt={s.alt} width={later[i - 1].attributes.width} height={later[i - 1].attributes.height} decoding="async" />
+        )}
       </div>
     ))}
   </div>

@@ -19,7 +19,7 @@ const { explore: e } = site;
         <article class="swiper-slide">
           <a class="story" href={p.href}>
             <div class="frame">
-              <Image src={p.image} alt={p.alt} widths={[700, 1200, 1800]} sizes="(max-width: 767px) 90vw, 70vw" loading="lazy" />
+              <Image src={p.image} alt={p.alt} widths={[700, 1200, 1800]} quality={70} sizes="(max-width: 767px) 90vw, 70vw" loading="lazy" />
             </div>
             <div class="story__copy">
               <span class="label">{p.tag}</span>

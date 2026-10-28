@@ -83,6 +83,12 @@ if (reduced) {
     const HOLD = 5.5;
     const FADE = 1.6;
     gsap.set(slides, { opacity: 0, scale: 1 });
+    const loadLater = () => $$<HTMLImageElement>('img[data-srcset]').forEach((img) => {
+      img.srcset = img.dataset.srcset!;
+      img.src = img.dataset.src!;
+    });
+    if (document.readyState === 'complete') loadLater();
+    else window.addEventListener('load', loadLater, { once: true });
     let current = 0;
     const show = (i: number) => {
       const next = slides[i];
