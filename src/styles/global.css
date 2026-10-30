@@ -167,14 +167,13 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .hero__slide img { width: 100%; height: 100%; object-fit: cover; }
 /* overlay sits above the slides (they get z-index 1–2 while fading) so the copy stays readable */
 .hero__slides.shade::after { z-index: 3; background: linear-gradient(90deg, rgba(42, 63, 86, 0.55), rgba(42, 63, 86, 0.1) 60%), linear-gradient(rgba(42, 63, 86, 0.2), rgba(42, 63, 86, 0.05) 45%, rgba(42, 63, 86, 0.6)); }
-.hero__copy, .hero__foot { text-shadow: 0 1px 14px rgba(20, 30, 42, 0.45); }
-.hero__foot .text { font-size: 1.15rem; line-height: 1.4; }
+.hero__copy { text-shadow: 0 1px 14px rgba(20, 30, 42, 0.45); }
 
-/* hero copy: label and title middle left, text and link bottom right */
+/* hero copy: label, title and link middle left */
 .hero__copy { position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); top: 46%; transform: translateY(-50%); display: grid; gap: 20px; justify-items: start; }
 .hero h1 { font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.02; }
 .hero__line { display: block; }
-.hero__foot { position: absolute; z-index: 2; right: var(--gutter); bottom: 96px; max-width: 30ch; display: grid; gap: 20px; justify-items: start; }
+.hero__copy .link { margin-top: 8px; }
 
 /* 3 split */
 .split { display: grid; grid-template-columns: 1fr 1fr; height: 65svh; min-height: 460px; }
@@ -228,26 +227,66 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
   .rooms__grid { grid-template-columns: 1fr; gap: 32px; }
 }
 
-/* explore trongsa: blog slideshow */
+/* explore trongsa: one story card on the home page, linking to the full page */
 .explore { padding: 106px var(--gutter); }
 .explore > .label { display: block; margin-bottom: 8px; }
 .explore__head { margin-left: 33.3%; display: grid; gap: 40px; margin-bottom: 64px; }
-.explore__head h2 { max-width: 12em; }
+.explore__head h1, .explore__head h2 { max-width: 12em; }
 .explore__foot { display: grid; gap: 20px; justify-items: start; }
 .explore__foot .text { max-width: 44ch; line-height: 1.45; }
-.story { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; color: var(--white); --arrow-ink: var(--ink); }
+.story { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; }
 .story .frame { position: absolute; inset: 0; }
 .story .frame img { height: 100%; transition: transform 0.8s var(--ease); }
 .story:hover .frame img { transform: scale(1.04); }
-.story::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(42, 63, 86, 0.75)); }
-.story__copy { position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 28px; display: grid; gap: 14px; justify-items: start; }
-.story__copy p { max-width: 40ch; line-height: 1.4; }
-.pill__count { min-width: 5.5em; text-align: center; }
+/* photo left (same size as the old carousel slide), Trongsa Dzong write-up on its right */
+.explore__body { display: grid; grid-template-columns: 2fr 1fr; gap: 28px 4%; align-items: center; }
+.explore__place { display: grid; gap: 18px; justify-items: start; }
+.explore__place .text { max-width: 44ch; line-height: 1.45; }
+@media (max-width: 1100px) { .explore__body { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 767px) {
   .explore { padding: 64px var(--gutter); }
   .explore__head { margin-left: 0; margin-top: 28px; margin-bottom: 40px; gap: 24px; }
   .story { aspect-ratio: 4 / 5; }
-  .story__copy { left: 18px; right: 18px; bottom: 20px; }
+  .explore__body { grid-template-columns: 1fr; }
+}
+
+/* explore trongsa page */
+.explore-page { padding: 106px var(--gutter); }
+.explore-page > .label { display: block; margin-bottom: 8px; }
+.explore__intro { max-width: 44ch; line-height: 1.45; }
+.places { display: grid; gap: 106px; }
+.place { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 6%; align-items: center; }
+.place:nth-child(even) .place__img { order: 2; }
+.place__img { aspect-ratio: 4 / 3; border-radius: 8px; }
+.place__copy { display: grid; gap: 24px; justify-items: start; }
+.place__copy .text { max-width: 40ch; line-height: 1.45; }
+.explore-page__foot { margin-top: 106px; display: flex; justify-content: center; }
+@media (max-width: 767px) {
+  .explore-page { padding: 64px var(--gutter); }
+  .places { gap: 64px; }
+  .place { grid-template-columns: 1fr; }
+  .place:nth-child(even) .place__img { order: 0; }
+  .explore-page__foot { margin-top: 64px; }
+}
+
+/* reviews: Google and Tripadvisor quotes, below About */
+.reviews { background: var(--offwhite); padding: 0 var(--gutter) 106px; }
+.reviews > .label { display: block; margin-bottom: 8px; }
+.reviews__head { margin-left: 33.3%; margin-bottom: 64px; }
+.reviews__head h2 { max-width: 12em; }
+.reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.review { display: flex; flex-direction: column; gap: 24px; padding: 32px 28px; border-radius: 8px; background: var(--white); border: 1px solid rgba(165, 137, 14, 0.25); }
+.review__stars { color: var(--gold); letter-spacing: 0.15em; font-size: 1rem; }
+.review__stars .is-off { opacity: 0.25; }
+.review__quote { flex: 1; font-size: 1.05rem; line-height: 1.5; }
+.review__meta { display: grid; gap: 8px; }
+.review__meta .label { color: var(--grey); }
+.reviews__links { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; }
+@media (max-width: 1100px) { .reviews__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 767px) {
+  .reviews { padding-bottom: 64px; }
+  .reviews__head { margin-left: 0; margin-top: 28px; margin-bottom: 40px; }
+  .reviews__grid { grid-template-columns: 1fr; }
 }
 
 /* 7 about */
@@ -299,7 +338,6 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
   .full { min-height: 520px; }
   .hero__copy { top: 40%; gap: 14px; }
   .hero h1 { font-size: clamp(1.4rem, 6.2vw, 2rem); }
-  .hero__foot { left: var(--gutter); right: 84px; bottom: 80px; }
   .split { grid-template-columns: 1fr; height: auto; }
   .split .frame { height: 42svh; }
   .split__panel { padding-top: 48px; padding-bottom: 48px; gap: 28px; }
@@ -321,15 +359,13 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 
 /* short screens (phones held sideways, small laptops): hero copy flows instead of being pinned */
 @media (max-height: 600px) {
-  .hero { height: auto; min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: 40px var(--gutter) 32px; }
-  .hero__copy, .hero__foot { position: relative; inset: auto; transform: none; }
-  .hero__foot { align-self: flex-end; margin-right: 64px; }
+  .hero { height: auto; min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; justify-content: center; padding: 40px var(--gutter) 32px; }
+  .hero__copy { position: relative; inset: auto; transform: none; }
 }
 @media (max-height: 500px) {
   :root { --header-h: 60px; }
   .header__logo img { height: 36px; }
 }
-@media (max-height: 600px) and (max-width: 767px) { .hero__foot { align-self: flex-start; margin-right: 0; } }
 
 /* floating chat (Chaty-style) */
 .chaty { position: fixed; right: 20px; bottom: 20px; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }

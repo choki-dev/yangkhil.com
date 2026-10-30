@@ -1,5 +1,5 @@
 ---
-import { site } from '../data/site';
+import { site, homeLink } from '../data/site';
 const { footer } = site;
 const icons: Record<string, string> = {
   facebook: 'M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8Z',
@@ -12,7 +12,7 @@ const icons: Record<string, string> = {
     <div>
       <span class="label">Navigation</span>
       <nav class="footer__nav" aria-label="Footer">
-        {site.nav.map((l) => <a href={l.href}>{l.label}</a>)}
+        {site.nav.map((l) => <a href={homeLink(l.href, Astro.url.pathname)}>{l.label}</a>)}
       </nav>
     </div>
     <div>

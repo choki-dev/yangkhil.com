@@ -1,0 +1,28 @@
+---
+import Link from './Link.astro';
+import { site } from '../data/site';
+const { reviews: r } = site;
+---
+<section class="reviews" id="reviews" data-header-theme="light">
+  <span class="label" data-fade>{r.label}</span>
+  <div class="reviews__head">
+    <h2 class="title-l" data-split>{r.title}</h2>
+  </div>
+  <ul class="reviews__grid">
+    {r.items.map((item) => (
+      <li class="review" data-fade>
+        <span class="review__stars" role="img" aria-label={`${item.rating} out of 5 stars`}>
+          {Array.from({ length: 5 }, (_, i) => <span aria-hidden="true" class:list={{ 'is-off': i >= item.rating }}>&#9733;</span>)}
+        </span>
+        <blockquote class="review__quote">{item.quote}</blockquote>
+        <div class="review__meta">
+          <span>{item.name}</span>
+          <span class="label">{item.date} &middot; {item.source}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <div class="reviews__links">
+    {r.links.map((l) => <Link href={l.href} label={l.label} />)}
+  </div>
+</section>

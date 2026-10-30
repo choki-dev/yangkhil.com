@@ -26,9 +26,6 @@ const later = await Promise.all(hero.slides.slice(1).map((s) => getImage({ src: 
     <h1 data-split data-hero-title>
       {hero.titleLines.map((l) => <span class="hero__line">{l}</span>)}
     </h1>
-  </div>
-  <div class="hero__foot">
-    <p class="text" data-fade>{hero.text}</p>
     <Link href={hero.link.href} label={hero.link.label} />
   </div>
 </section>

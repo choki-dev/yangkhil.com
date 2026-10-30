@@ -21,13 +21,19 @@ import exploreValley from '../assets/explore-valley.jpg';
 import aboutNight from '../assets/about-night.jpg';
 import contactShrine from '../assets/contact-shrine.jpg';
 
+// base path for links between pages (the site is served from /yangkhil.com/ on GitHub Pages)
+export const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const explorePage = `${base}/explore-trongsa/`;
+// on other pages, '#about' style links need to go back to the home page first
+export const homeLink = (href: string, path: string) =>
+  href.startsWith('#') && path.replace(/\/$/, '') !== base ? `${base}/${href}` : href;
+
 export const site = {
   name: 'Yangkhil Resort',
   logo,
   bookUrl: '#contact',
   nav: [
     { label: 'About Us', href: '#about' },
-    { label: 'Rooms', href: '#our-rooms' },
     { label: 'Amenities & Experiences', href: '#amenities' },
     { label: 'Explore Trongsa', href: '#explore-trongsa' },
   ],
@@ -42,7 +48,6 @@ export const site = {
     label: 'Trongsa, Bhutan',
     // One entry per line of the headline.
     titleLines: ['Discover the heart', 'of Bhutan at Yangkhil', 'Resort, Trongsa.'],
-    text: 'Timber cottages and quiet gardens on the hillside, looking across the valley to Trongsa Dzong.',
     link: { label: 'Book your stay', href: '#contact' },
   },
   split: {
@@ -116,18 +121,37 @@ export const site = {
     image: aboutNight,
     alt: 'Yangkhil Resort lit up at dusk above the garden',
   },
+  reviews: {
+    label: 'Guest reviews',
+    title: 'What our guests say',
+    // Copy real reviews from the resort's Google and Tripadvisor listings.
+    // rating is out of 5; source is 'Google' or 'Tripadvisor'.
+    items: [
+      { quote: 'Paste a guest review from Google here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Google' },
+      { quote: 'Paste a guest review from Tripadvisor here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Tripadvisor' },
+      { quote: 'Paste a guest review from Google here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Google' },
+    ],
+    // Replace with the resort's own listing URLs.
+    links: [
+      { label: 'Read reviews on Google', href: 'https://www.google.com/maps/search/?api=1&query=Yangkhil+Resort+Trongsa' },
+      { label: 'Read reviews on Tripadvisor', href: 'https://www.tripadvisor.com/Search?q=Yangkhil+Resort+Trongsa' },
+    ],
+  },
   explore: {
     label: 'Explore Trongsa',
     title: 'Stories from the heart of Bhutan',
     text: 'Dzongs, watchtowers and valley views a short way from the resort. Read our guides to Trongsa’s attractions before you go.',
-    // Blog: point each href at its post once the blog pages exist.
-    link: { label: 'Read the blog', href: '#explore-trongsa' },
+    link: { label: 'Explore Trongsa', href: explorePage },
     posts: [
       {
         tag: 'Heritage',
         title: 'Trongsa Dzong',
         text: 'The largest dzong in Bhutan, stepping down a ridge above the Mangde Chhu gorge.',
-        href: '#explore-trongsa',
+        // longer write-up, shown beside the photo on the home page and on the Explore Trongsa page
+        details: [
+          'Built in 1644, Bhutan’s largest dzong is the ancestral seat of the royal family and hosts the Trongsa Tshechu each winter.',
+        ],
+        id: 'trongsa-dzong',
         image: exploreTrongsaDzong,
         alt: 'Trongsa Dzong spread along a forested ridge',
       },
@@ -135,7 +159,7 @@ export const site = {
         tag: 'Museum',
         title: 'Taa Dzong',
         text: 'The old watchtower above the dzong, now home to the Tower of Trongsa Royal Heritage Museum.',
-        href: '#explore-trongsa',
+        id: 'ta-dzong',
         image: exploreTaDzong,
         alt: 'Taa Dzong watchtower above the trees',
       },
@@ -143,7 +167,7 @@ export const site = {
         tag: 'Town walk',
         title: 'Trongsa Town',
         text: 'A small hillside town of shops and tea stalls, looking across to the dzong.',
-        href: '#explore-trongsa',
+        id: 'trongsa-town',
         image: exploreTrongsaTown,
         alt: 'Rooftops of Trongsa town seen through trees',
       },
@@ -151,7 +175,7 @@ export const site = {
         tag: 'Viewpoint',
         title: 'Mangde Chhu Valley',
         text: 'Panoramic views across the valley to Trongsa Dzong, right from the resort gardens.',
-        href: '#explore-trongsa',
+        id: 'mangde-chhu-valley',
         image: exploreValley,
         alt: 'Trongsa Dzong across the valley, framed by wisteria',
       },

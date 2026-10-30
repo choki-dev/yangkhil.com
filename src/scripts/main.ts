@@ -2,7 +2,6 @@ import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Swiper from 'swiper';
-import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -166,31 +165,22 @@ document.addEventListener('click', (e) => {
   else target.scrollIntoView();
 });
 
-/* ---------- sliders: amenity cards and the Explore Trongsa slideshow ---------- */
+/* ---------- amenity cards slider ---------- */
 $$('[data-slider]').forEach((el) => {
   const section = el.closest('section')!;
   const bar = $('[data-progress]', section)!;
-  const count = $('[data-count]', section);
-  const slideshow = el.hasAttribute('data-autoplay');
-  const pad = (n: number) => String(n).padStart(2, '0');
   const update = (s: Swiper) => {
     const total = s.slides.length;
     const visible = Math.min(total, Math.max(1, s.params.slidesPerView as number));
     const w = (visible / total) * 100;
     bar.style.width = `${w}%`;
     bar.style.left = `${Math.min(Math.max(s.progress, 0), 1) * (100 - w)}%`;
-    if (count) count.textContent = `${pad(s.activeIndex + 1)} / ${pad(total)}`;
   };
   const swiper = new Swiper(el, {
-    modules: [Autoplay],
-    slidesPerView: slideshow ? 1.08 : 1.2,
+    slidesPerView: 1.2,
     spaceBetween: 8,
-    speed: slideshow ? 900 : 700,
-    breakpoints: slideshow
-      ? { 768: { slidesPerView: 1.25 }, 1100: { slidesPerView: 1.5 } }
-      : { 768: { slidesPerView: 2.2 }, 1100: { slidesPerView: 3 } },
-    autoplay: slideshow && !reduced ? { delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false } : false,
-    rewind: slideshow,
+    speed: 700,
+    breakpoints: { 768: { slidesPerView: 2.2 }, 1100: { slidesPerView: 3 } },
     on: { init: update, progress: update, slideChange: update, resize: update },
   });
   $('[data-prev]', section)!.addEventListener('click', () => swiper.slidePrev());
