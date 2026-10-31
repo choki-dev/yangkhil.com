@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import Footer from '../components/Footer.astro';
+import Chat from '../components/Chat.astro';
+import { site } from '../data/site';
+const { aboutPage: a } = site;
+---
+<Layout title="About Us | Yangkhil Resort" description="Established in 2004, Yangkhil Resort is a hillside retreat overlooking Trongsa Dzong, Taa Dzong and the Mangde Chhu river in central Bhutan.">
+  <Header />
+  <main>
+    <PageHero label={a.label} title={a.title} image={a.hero} alt={a.heroAlt} />
+
+    <section class="intro" data-header-theme="light">
+      <p class="intro__text" data-fade>{a.intro}</p>
+      <ul class="facts">
+        {a.facts.map((f) => (
+          <li data-fade>
+            <span class="facts__value">{f.value}</span>
+            <span class="label">{f.label}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="features" data-header-theme="light">
+      {a.sections.map((s) => (
+        <article class="feature">
+          <div class="frame feature__img" data-parallax>
+            <Image src={s.image} alt={s.alt} widths={[800, 1200, 1600, 2200]} quality={88} sizes="(max-width: 767px) 100vw, 50vw" loading="lazy" />
+          </div>
+          <div class="feature__copy">
+            <span class="label">{s.label}</span>
+            <h2 class="title-l" data-split>{s.title}</h2>
+            {s.text.map((t) => <p class="text" data-fade>{t}</p>)}
+          </div>
+        </article>
+      ))}
+    </section>
+
+  </main>
+  <Footer />
+  <Chat />
+</Layout>

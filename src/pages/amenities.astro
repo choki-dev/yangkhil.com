@@ -1,0 +1,82 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import Link from '../components/Link.astro';
+import BookBand from '../components/BookBand.astro';
+import Footer from '../components/Footer.astro';
+import Chat from '../components/Chat.astro';
+import { site } from '../data/site';
+const { amenitiesPage: a } = site;
+---
+<Layout title="Amenities & Experiences | Yangkhil Resort" description="Restaurant, traditional hot stone bath, spa and massage, conference and banquet halls, Thori Lounge and Ngal So Coffee Lounge at Yangkhil Resort, Trongsa.">
+  <Header />
+  <main>
+    <PageHero label={a.label} title={a.title} image={a.hero} alt={a.heroAlt} />
+
+    <section class="intro" data-header-theme="light">
+      <p class="intro__text" data-fade>{a.text}</p>
+      <nav class="jump" aria-label="Amenities on this page">
+        {site.amenities.map((m) => <a href={`#${m.id}`}>{m.title}</a>)}
+      </nav>
+    </section>
+
+    <section class="features" data-header-theme="light">
+      {site.amenities.map((m) => {
+        const photos = [{ image: m.image, alt: m.alt }, ...(m.gallery ?? [])];
+        return (
+        <article class="feature" id={m.id}>
+          <div class="gallery" data-gallery>
+            <div class="swiper feature__img">
+              <div class="swiper-wrapper">
+                {photos.map((ph) => (
+                  <div class="swiper-slide frame">
+                    <Image src={ph.image} alt={ph.alt} widths={[800, 1200, 1600, 2200]} quality={88} sizes="(max-width: 767px) 100vw, 50vw" loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div class="pill gallery__pill" role="group" aria-label={`${m.title} photos`}>
+              <button type="button" data-gallery-prev aria-label="Previous photo">&larr;</button>
+              <span class="gallery__count" data-gallery-count>1 / {photos.length}</span>
+              <button type="button" data-gallery-next aria-label="Next photo">&rarr;</button>
+            </div>
+          </div>
+          <div class="feature__copy">
+            <span class="label">{m.text}</span>
+            <h2 class="title-l" data-split>{m.title}</h2>
+            {m.details.map((t) => <p class="text" data-fade>{t}</p>)}
+            <Link href={`${site.bookUrl}?interest=${encodeURIComponent(m.title)}`} label="Enquire" />
+          </div>
+        </article>
+        );
+      })}
+    </section>
+
+    <BookBand />
+  </main>
+  <Footer />
+  <Chat />
+</Layout>
+
+<script>
+  import Swiper from 'swiper';
+  import 'swiper/css';
+
+  // photo carousel for each amenity
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((el) => {
+    const count = el.querySelector<HTMLElement>('[data-gallery-count]')!;
+    const prev = el.querySelector<HTMLButtonElement>('[data-gallery-prev]')!;
+    const next = el.querySelector<HTMLButtonElement>('[data-gallery-next]')!;
+    // one photo only: keep the arrows for a consistent look, but switched off
+    prev.disabled = next.disabled = el.querySelectorAll('.swiper-slide').length < 2;
+    const swiper = new Swiper(el.querySelector<HTMLElement>('.swiper')!, {
+      rewind: true,
+      speed: 700,
+      on: { slideChange: (s) => { count.textContent = `${s.activeIndex + 1} / ${s.slides.length}`; } },
+    });
+    prev.addEventListener('click', () => swiper.slidePrev());
+    next.addEventListener('click', () => swiper.slideNext());
+  });
+</script>

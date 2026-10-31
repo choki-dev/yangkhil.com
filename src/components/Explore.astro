@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Link from './Link.astro';
-import { site, explorePage } from '../data/site';
+import { site, placePage } from '../data/site';
 const { explore: e } = site;
 // the home page shows one place; the full list is on the Explore Trongsa page
 const p = e.posts[0];
@@ -16,16 +16,16 @@ const p = e.posts[0];
     </div>
   </div>
   <div class="explore__body">
-    <a class="story" href={`${explorePage}#${p.id}`} aria-label={`${p.title}: read more on the Explore Trongsa page`}>
+    <a class="story" href={placePage(p.id)} aria-label={`${p.title}: view details`}>
       <div class="frame">
-        <Image src={p.image} alt={p.alt} widths={[700, 1200, 1800]} quality={70} sizes="(max-width: 767px) 90vw, 70vw" loading="lazy" />
+        <Image src={p.image} alt={p.alt} widths={[900, 1400, 2000, 2600]} quality={88} sizes="(max-width: 767px) 90vw, 70vw" loading="lazy" />
       </div>
     </a>
     <div class="explore__place">
       <span class="label" data-fade>{p.tag}</span>
       <h3 class="title-m" data-split>{p.title}</h3>
       {(p.details ?? [p.text]).map((t) => <p class="text" data-fade>{t}</p>)}
-      <Link href={`${explorePage}#${p.id}`} label="Read more" />
+      <Link href={placePage(p.id)} label="View details" />
     </div>
   </div>
 </section>

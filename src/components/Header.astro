@@ -2,6 +2,12 @@
 import { Image } from 'astro:assets';
 import { site, homeLink } from '../data/site';
 const link = (href: string) => homeLink(href, Astro.url.pathname);
+const trim = (p: string) => p.replace(/\/$/, '');
+// highlight the section you're in, including sub-pages such as /explore-trongsa/ta-dzong/
+const current = (href: string) => {
+  const path = trim(Astro.url.pathname);
+  return href.startsWith('/') && (path === trim(href) || path.startsWith(href)) ? 'page' : undefined;
+};
 ---
 <header class="header" id="header">
   <div class="header__bar">
@@ -13,9 +19,9 @@ const link = (href: string) => homeLink(href, Astro.url.pathname);
     </button>
     <nav class="header__nav" id="menu" aria-label="Main" data-lenis-prevent>
       <ul class="header__links">
-        {site.nav.map((l) => <li><a href={link(l.href)}>{l.label}</a></li>)}
+        {site.nav.map((l) => <li><a href={link(l.href)} aria-current={current(l.href)}>{l.label}</a></li>)}
       </ul>
-      <a class="header__book" href={link(site.bookUrl)}>Book now</a>
+      <a class="header__book" href={link(site.bookUrl)} aria-current={current(site.bookUrl)}>Book now</a>
     </nav>
   </div>
 </header>

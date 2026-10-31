@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Link from './Link.astro';
-import { site } from '../data/site';
+import { site, page } from '../data/site';
 ---
 <section class="cards" id="amenities" data-header-theme="light">
   <div class="swiper" data-slider>
@@ -10,12 +10,12 @@ import { site } from '../data/site';
         <article class="swiper-slide">
           <div class="card">
             <div class="frame">
-              <Image src={a.image} alt={a.alt} widths={[400, 700, 1000]} quality={70} sizes="(max-width: 767px) 85vw, 33vw" loading="lazy" />
+              <Image src={a.image} alt={a.alt} widths={[600, 900, 1400]} quality={88} sizes="(max-width: 767px) 85vw, 33vw" loading="lazy" />
             </div>
             <div class="card__top"><h3 class="title-m">{a.title}</h3></div>
             <div class="card__bottom">
               <p>{a.text}</p>
-              <Link href="#contact" label="Explore more" />
+              <Link href={`${page.amenities}#${a.id}`} label="Explore more" />
             </div>
           </div>
         </article>

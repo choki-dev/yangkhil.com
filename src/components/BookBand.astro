@@ -1,0 +1,10 @@
+---
+import Link from './Link.astro';
+import { site } from '../data/site';
+interface Props { title?: string }
+const { title = 'Ready to stay with us?' } = Astro.props;
+---
+<section class="book-band" data-header-theme="dark">
+  <h2 class="title-l" data-split>{title}</h2>
+  <Link href={site.bookUrl} label="Book now" />
+</section>

@@ -1,11 +1,14 @@
 # Builds the site on every push to main and publishes it to the gh-pages branch,
 # which GitHub Pages serves at https://choki-dev.github.io/yangkhil.com/.
+# It also rebuilds once a day so new Google reviews appear on the site.
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # daily at 06:00 Bhutan time
 
 permissions:
   contents: write
@@ -19,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_PATH: /yangkhil.com
+      # set these under Settings > Secrets and variables > Actions; without them the site uses the reviews in site.ts
+      GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+      GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5

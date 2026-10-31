@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import Link from '../components/Link.astro';
+import Retreat from '../components/Retreat.astro';
+import BookBand from '../components/BookBand.astro';
+import Footer from '../components/Footer.astro';
+import Chat from '../components/Chat.astro';
+import { site, page } from '../data/site';
+const { roomsSection: r } = site;
+const pad = (n: number) => String(n).padStart(2, '0');
+const bookRoom = (name: string) => `${page.book}?room=${encodeURIComponent(name)}`;
+---
+<Layout title="Rooms | Yangkhil Resort" description="21 rooms across five cottages overlooking Trongsa: Premium Single, Premium Twin, Deluxe Single and Deluxe Double rooms at Yangkhil Resort.">
+  <Header />
+  <main>
+    <PageHero label={r.label} title={r.title} image={r.hero} alt={r.heroAlt} />
+
+    <section class="intro" data-header-theme="light">
+      <p class="intro__text" data-fade>{r.text}</p>
+      <ul class="facts facts--3">
+        {r.facts.map((f) => (
+          <li data-fade>
+            <span class="facts__value">{f.value}</span>
+            <span class="label">{f.label}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- room showcase: pick a room on the right, its photos fade in on the left -->
+    <section class="showcase on-dark" id="our-rooms" data-header-theme="dark" data-showcase>
+      <div class="showcase__media">
+        {r.rooms.map((room, i) => (
+          <div class:list={['showcase__slide', { 'is-active': i === 0 }]} data-showcase-slide>
+            {[{ image: room.image, alt: room.alt }, ...room.gallery].map((ph, j) => (
+              <div class:list={['showcase__photo', { 'is-shown': j === 0 }]} data-showcase-photo>
+                <Image src={ph.image} alt={ph.alt} widths={[900, 1400, 2000, 2600]} quality={88} sizes="(max-width: 1100px) 100vw, 58vw" loading={i === 0 && j === 0 ? 'eager' : 'lazy'} />
+              </div>
+            ))}
+          </div>
+        ))}
+        <span class="showcase__count label" aria-hidden="true"><b data-showcase-count>01</b> / {pad(r.rooms.length)}</span>
+        {r.rooms.some((room) => room.gallery.length > 0) && (
+          <div class="pill showcase__pill" role="group" aria-label="Room photos">
+            <button type="button" data-photo-prev aria-label="Previous photo">&larr;</button>
+            <span class="showcase__photos" data-photo-count>1 / {1 + r.rooms[0].gallery.length}</span>
+            <button type="button" data-photo-next aria-label="Next photo">&rarr;</button>
+          </div>
+        )}
+      </div>
+
+      <div class="showcase__panel">
+        <span class="label">Choose your room</span>
+        <ol class="showcase__list">
+          {r.rooms.map((room, i) => (
+            <li class:list={['showcase__item', { 'is-active': i === 0 }]} data-showcase-item>
+              <button type="button" class="showcase__tab" aria-pressed={i === 0 ? 'true' : 'false'}>
+                <span class="showcase__num label">{pad(i + 1)}</span>
+                <span class="showcase__name">{room.name}</span>
+              </button>
+              <div class="showcase__more">
+                <span class="label">{room.guests} &middot; {room.bed} &middot; Valley-view balcony</span>
+                <Link href={bookRoom(room.name)} label="Book this room" />
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="showcase__note">{r.note}</p>
+      </div>
+    </section>
+
+    <section class="includes" data-header-theme="light">
+      <span class="label" data-fade>Every room includes</span>
+      <ul class="includes__list">
+        {r.features.map((f, i) => (
+          <li data-fade>
+            <span class="includes__num label">{pad(i + 1)}</span>
+            <h2 class="title-m">{f.title}</h2>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <Retreat />
+    <BookBand />
+  </main>
+  <Footer />
+  <Chat />
+</Layout>
+
+<script>
+  const showcase = document.querySelector<HTMLElement>('[data-showcase]');
+  if (showcase) {
+    const slides = Array.from(showcase.querySelectorAll<HTMLElement>('[data-showcase-slide]'));
+    const items = Array.from(showcase.querySelectorAll<HTMLElement>('[data-showcase-item]'));
+    const count = showcase.querySelector<HTMLElement>('[data-showcase-count]')!;
+    const hover = window.matchMedia('(hover: hover) and (min-width: 1101px)');
+    // the photo arrows only render when a room has more than one photo
+    const photoCount = showcase.querySelector<HTMLElement>('[data-photo-count]');
+    let room = 0;
+    let photo = 0;
+    // step through the active room's photos, wrapping at either end
+    const show = (n: number) => {
+      const photos = Array.from(slides[room].querySelectorAll<HTMLElement>('[data-showcase-photo]'));
+      photo = (n + photos.length) % photos.length;
+      photos.forEach((p, j) => p.classList.toggle('is-shown', j === photo));
+      if (photoCount) photoCount.textContent = `${photo + 1} / ${photos.length}`;
+    };
+    showcase.querySelector('[data-photo-prev]')?.addEventListener('click', () => show(photo - 1));
+    showcase.querySelector('[data-photo-next]')?.addEventListener('click', () => show(photo + 1));
+    const select = (i: number) => {
+      if (i === room) return;
+      room = i;
+      items.forEach((item, j) => {
+        item.classList.toggle('is-active', i === j);
+        item.querySelector('button')!.setAttribute('aria-pressed', String(i === j));
+      });
+      slides.forEach((s, j) => s.classList.toggle('is-active', i === j));
+      count.textContent = String(i + 1).padStart(2, '0');
+      show(0);
+    };
+    items.forEach((item, i) => {
+      item.querySelector('button')!.addEventListener('click', () => select(i));
+      item.addEventListener('mouseenter', () => { if (hover.matches) select(i); });
+    });
+  }
+</script>

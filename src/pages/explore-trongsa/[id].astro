@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PageHero from '../../components/PageHero.astro';
+import Link from '../../components/Link.astro';
+import Footer from '../../components/Footer.astro';
+import Chat from '../../components/Chat.astro';
+import { site, page, placePage } from '../../data/site';
+
+// one page per Trongsa attraction, built from site.explore.posts
+export function getStaticPaths() {
+  return site.explore.posts.map((post) => ({ params: { id: post.id } }));
+}
+
+const { id } = Astro.params;
+const posts = site.explore.posts;
+const index = posts.findIndex((p) => p.id === id);
+const post = posts[index];
+const next = posts[(index + 1) % posts.length];
+const others = posts.filter((p) => p.id !== id);
+const [lede, ...rest] = post.body;
+---
+<Layout title={`${post.title} | Explore Trongsa | Yangkhil Resort`} description={post.text}>
+  <Header />
+  <main>
+    <PageHero label={post.tag} title={post.title} image={post.image} alt={post.alt} />
+
+    <article class="post" data-header-theme="light">
+      <nav class="post__crumbs label" aria-label="Breadcrumb">
+        <a href={page.explore}>Explore Trongsa</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{post.title}</span>
+      </nav>
+
+      <div class="post__body">
+        <p class="post__lede" data-fade>{lede}</p>
+        {rest.map((t) => <p data-fade>{t}</p>)}
+      </div>
+
+      <aside class="post__aside">
+        <div class="post__card">
+          <span class="label">Stay nearby</span>
+          <p>Yangkhil Resort looks across the valley to Trongsa Dzong, a short walk from Trongsa town.</p>
+          <Link href={site.bookUrl} label="Book your stay" />
+        </div>
+        <a class="post__next" href={placePage(next.id)}>
+          <span class="label">Next place</span>
+          <span class="title-m">{next.title}</span>
+          <span class="post__next-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </aside>
+    </article>
+
+    <section class="more" data-header-theme="light">
+      <div class="more__head">
+        <span class="label">More to explore</span>
+        <Link href={page.explore} label="All places" />
+      </div>
+      <ul class="more__grid">
+        {others.map((p) => (
+          <li>
+            <a class="post-card" href={placePage(p.id)}>
+              <div class="frame post-card__img">
+                <Image src={p.image} alt={p.alt} widths={[600, 900, 1400]} quality={88} sizes="(max-width: 767px) 100vw, 33vw" loading="lazy" />
+              </div>
+              <span class="label">{p.tag}</span>
+              <h2 class="title-m">{p.title}</h2>
+              <p>{p.text}</p>
+              <span class="link">View details<span class="arrow" aria-hidden="true"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4h6M4.5 1.5 7 4 4.5 6.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+  <Chat />
+</Layout>

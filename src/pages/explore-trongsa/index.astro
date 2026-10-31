@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PageHero from '../../components/PageHero.astro';
+import Link from '../../components/Link.astro';
+import Footer from '../../components/Footer.astro';
+import Chat from '../../components/Chat.astro';
+import { site, placePage } from '../../data/site';
+const { explore: e } = site;
+---
+<Layout title="Explore Trongsa | Yangkhil Resort" description="Trongsa Dzong, Taa Dzong, Trongsa town and the Mangde Chhu valley: places to see near Yangkhil Resort in Trongsa, Bhutan.">
+  <Header />
+  <main>
+    <PageHero label={e.label} title={e.title} image={e.hero} alt={e.heroAlt} />
+
+    <section class="intro" data-header-theme="light">
+      <p class="intro__text" data-fade>{e.text}</p>
+    </section>
+
+    <!-- the route: a gold line draws down the page as you scroll, one stop per place -->
+    <section class="route" data-header-theme="light" data-route>
+      <div class="route__line" aria-hidden="true"><i data-route-progress></i></div>
+      {e.posts.map((p) => (
+        <article class="stop" id={p.id} data-stop>
+          <span class="stop__dot" aria-hidden="true"></span>
+          <a class="frame stop__img" href={placePage(p.id)} aria-label={`${p.title}: view details`} data-parallax>
+            <Image src={p.image} alt={p.alt} widths={[800, 1200, 1600, 2200]} quality={88} sizes="(max-width: 767px) 100vw, 45vw" loading="lazy" />
+          </a>
+          <div class="stop__copy">
+            <span class="label">{p.tag}</span>
+            <h2 class="title-l" data-split>{p.title}</h2>
+            {(p.details ?? [p.text]).map((t) => <p class="text" data-fade>{t}</p>)}
+            <Link href={placePage(p.id)} label="View details" />
+          </div>
+        </article>
+      ))}
+    </section>
+
+  </main>
+  <Footer />
+  <Chat />
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const route = document.querySelector<HTMLElement>('[data-route]');
+  const track = route?.querySelector<HTMLElement>('.route__line');
+  const line = document.querySelector<HTMLElement>('[data-route-progress]');
+  if (route && track && line) {
+    const dots = Array.from(route.querySelectorAll<HTMLElement>('.stop__dot'));
+    // the line runs from the first stop's dot to the last one (Mangde Chhu Valley), not the whole section
+    const fit = () => {
+      const top = route.getBoundingClientRect().top;
+      const centre = (d: HTMLElement) => d.getBoundingClientRect().top + d.offsetHeight / 2 - top;
+      const start = centre(dots[0]);
+      track.style.top = `${start}px`;
+      track.style.bottom = 'auto';
+      track.style.height = `${centre(dots[dots.length - 1]) - start}px`;
+    };
+    fit();
+    ScrollTrigger.addEventListener('refreshInit', fit);
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) gsap.set(line, { scaleY: 1 });
+    else gsap.fromTo(line, { scaleY: 0 }, {
+      scaleY: 1, ease: 'none',
+      scrollTrigger: { trigger: track, start: 'top 60%', end: 'bottom 60%', scrub: true },
+    });
+    // light up each dot as the gold line reaches it
+    dots.forEach((dot) => {
+      ScrollTrigger.create({ trigger: dot, start: 'center 60%', toggleClass: { targets: dot.closest('.stop')!, className: 'is-reached' } });
+    });
+  }
+</script>

@@ -25,3 +25,20 @@ npm run preview
 ## Placeholders to replace
 
 Phone number, address, Instagram URL, and the Dining / Experiences / Gift Cards links (currently anchors to on-page sections).
+
+## Guest reviews (pulled from Google)
+
+The reviews section loads the resort's Google reviews when the site is built (`src/data/reviews.ts`), the same way WordPress review plugins do. GitHub rebuilds the site every day, so new reviews show up on their own. It shows the overall rating and up to 6 reviews with 4 or 5 stars. Google only shares 5 reviews, the ones it ranks most relevant.
+
+Setup:
+
+1. In Google Cloud Console, create a project, turn on billing, enable **Places API (New)**, and create an API key restricted to that API. A daily rebuild stays far inside Google's free monthly allowance.
+2. Find the resort's Place ID with Google's Place ID Finder (search "Yangkhil Resort").
+3. On GitHub: repo **Settings > Secrets and variables > Actions**, add `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID`.
+4. To see live reviews locally, put the same two lines in a `.env` file in the project root (it is git-ignored):
+   ```
+   GOOGLE_PLACES_API_KEY=your-key
+   GOOGLE_PLACE_ID=your-place-id
+   ```
+
+Without the key, or if Google can't be reached, the site shows the reviews written in `site.ts` instead.

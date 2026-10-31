@@ -16,6 +16,12 @@ const icons: Record<string, string> = {
       </nav>
     </div>
     <div>
+      <span class="label">Contact</span>
+      <address class="footer__nav footer__contact">
+        {site.contact.details.map((d) => (d.href ? <a href={d.href}>{d.text}</a> : <span>{d.text}</span>))}
+      </address>
+    </div>
+    <div>
       <span class="label">Quick links</span>
       <nav class="footer__nav" aria-label="Quick links">
         {footer.quickLinks.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
