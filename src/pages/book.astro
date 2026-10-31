@@ -43,7 +43,7 @@ const reach: Record<string, string> = {
         </div>
       </aside>
 
-      <form class="planner" id="book-form" data-whatsapp={b.whatsapp} data-key={b.web3formsKey} novalidate>
+      <form class="planner" id="book-form" data-whatsapp={b.whatsapp} data-email={b.email} data-key={b.web3formsKey} novalidate>
         <h2 class="title-m">Booking enquiry</h2>
         <div class="field-row">
           <div class="field">
@@ -219,7 +219,7 @@ const reach: Record<string, string> = {
         if (!res.ok || !data.success) throw new Error(data.message || `HTTP ${res.status}`);
         form.reset();
         update();
-        success.textContent = `Thank you, your enquiry has been sent. Our reservations team will reply to ${email} soon.`;
+        success.textContent = `Thank you, your enquiry has been sent to ${form.dataset.email}. Our reservations team will reply soon.`;
         success.hidden = false;
       } catch (err) {
         console.error('[booking] enquiry not sent:', err);
