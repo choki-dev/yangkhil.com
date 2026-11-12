@@ -19,7 +19,7 @@ npm run preview
 
 ## Brand
 
-- Font: Palatino Linotype everywhere (`--font-brand` in `src/styles/global.css`). It is a system font on Windows and macOS (as Palatino); other devices fall back to Book Antiqua, URW Palladio L, then any serif.
+- Fonts: titles, labels and menu links use Palatino Linotype (`--font-display` in `src/styles/global.css`), a system font on Windows and macOS that falls back to Book Antiqua, URW Palladio L, then any serif. Body text uses Raleway (`--font-body`), self-hosted from the `@fontsource/raleway` package and loaded in `src/layouts/Layout.astro`.
 - Colours: logo gold `#A5890E`, navy `#2A3F56`, blue `#3F5E81` (`--gold`, `--navy`, `--blue`). Navy is the text colour, blue fills the rooms split panel, navy the contact card, gold is the accent (menu hover, slider progress, input focus).
 
 ## Placeholders to replace

@@ -12,7 +12,8 @@
 
   --font-brand: "Palatino Linotype", Palatino, "Book Antiqua", "URW Palladio L", serif;
   --font-display: var(--font-brand);
-  --font-body: var(--font-brand);
+  /* body text: Raleway (self-hosted, loaded in src/layouts/Layout.astro); titles stay Palatino */
+  --font-body: "Raleway", "Helvetica Neue", Arial, sans-serif;
 
   --title-xl: clamp(2.5rem, 4.75vw, 4.6rem);
   --title-l: clamp(2rem, 3.35vw, 3.25rem);
