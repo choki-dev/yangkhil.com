@@ -265,6 +265,31 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .reviews__score b { color: var(--navy); font-size: 1.4rem; font-weight: 400; }
 .reviews__score .review__star { width: 17px; height: 17px; align-self: center; }
 .reviews__widget--tripadvisor { display: flex; justify-content: center; }
+/* Tripadvisor's widget adds plain HTML to the page, so it is restyled here to match the review cards */
+.reviews__widget--tripadvisor .TA_selfserveprop { width: 100%; }
+.reviews__widget--tripadvisor .widSSP { width: 100% !important; max-width: none !important; border: 0 !important; background: none !important; padding: 0 !important; font-family: var(--font-body) !important; color: var(--navy) !important; }
+.reviews__widget--tripadvisor .widSSPData { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 20px; border: 0 !important; background: none !important; padding: 0 !important; }
+.reviews__widget--tripadvisor .widSSPClickWrap { display: none !important; }
+.reviews__widget--tripadvisor .widSSPBranding { margin: 0 !important; padding: 0 !important; border: 0 !important; }
+.reviews__widget--tripadvisor .widSSPBranding img { height: 26px !important; width: auto !important; }
+.reviews__widget--tripadvisor .widSSPComponent, .reviews__widget--tripadvisor .widSSPWrap, .reviews__widget--tripadvisor .widSSPInformation { margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+.reviews__widget--tripadvisor .widSSPH18 { font-family: var(--font-body) !important; font-size: 1.15rem !important; font-weight: 400 !important; color: var(--navy) !important; text-decoration: none !important; }
+.reviews__widget--tripadvisor .widSSPSummary a { text-decoration: none !important; }
+.reviews__widget--tripadvisor .widSSPInformation .widSSPWrap { display: flex !important; align-items: baseline; gap: 8px; }
+.reviews__widget--tripadvisor .widSSPH11 { font-family: var(--font-body) !important; font-size: 0.85rem !important; font-weight: 400 !important; color: var(--grey) !important; }
+.reviews__widget--tripadvisor .widSSPPopIdx, .reviews__widget--tripadvisor .widSSPPopIdx * { font-family: var(--font-body) !important; font-size: 0.95rem !important; color: var(--gold) !important; font-weight: 400 !important; }
+.reviews__widget--tripadvisor .widSSPComponent.widSSPOptional { flex-basis: 100%; margin-top: 28px !important; }
+.reviews__widget--tripadvisor .widSSPInformation dt, .reviews__widget--tripadvisor .widSSPWriteReview { display: none !important; }
+.reviews__widget--tripadvisor .widSSPReviews > dt { display: none !important; }
+.reviews__widget--tripadvisor .widSSPReviews, .reviews__widget--tripadvisor .widSSPOneReview { margin: 0 !important; padding: 0 !important; }
+.reviews__widget--tripadvisor .widSSPBullet { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0 !important; padding: 0 !important; list-style: none !important; }
+.reviews__widget--tripadvisor .widSSPBullet li { display: flex !important; flex-direction: column; justify-content: space-between; gap: 14px; margin: 0 !important; padding: 26px 22px 22px !important; border-radius: 12px; background: var(--white) !important; border: 1px solid rgba(165, 137, 14, 0.2); list-style: none !important; }
+.reviews__widget--tripadvisor .widSSPQuote { flex: 1; font-family: var(--font-body) !important; font-size: 1.02rem !important; line-height: 1.5 !important; color: var(--navy) !important; }
+.reviews__widget--tripadvisor .widSSPBullet li a { font-family: var(--font-body) !important; font-size: 0.85rem !important; color: var(--grey) !important; }
+.reviews__widget--tripadvisor .widSSPBullet li a:hover { color: var(--navy) !important; }
+.reviews__widget--tripadvisor .widSSPAll { display: none !important; }
+@media (max-width: 1100px) { .reviews__widget--tripadvisor .widSSPBullet { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 767px) { .reviews__widget--tripadvisor .widSSPBullet { grid-template-columns: 1fr; } }
 .reviews__credit { margin-top: 14px; text-align: center; font-size: 0.75rem; color: var(--grey); }
 .reviews__credit a { color: inherit; }
 .reviews__links { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; }
