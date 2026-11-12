@@ -39,7 +39,10 @@ const star = 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9
   <span class="label" data-fade>{r.label}</span>
   <div class="reviews__head">
     <h2 class="title-l" data-split>{r.title}</h2>
-    <a class="reviews__score" href={googleLink} target="_blank" rel="noopener" data-fade>
+  </div>
+
+  <div class="reviews__google" data-fade>
+    <a class="reviews__score reviews__source-row" href={googleLink} target="_blank" rel="noopener">
       <svg class="reviews__g" viewBox="0 0 48 48" aria-hidden="true">{gPaths.map((d) => <path fill={d[0]} d={d[1]} />)}</svg>
       <b>{score.rating.toFixed(1)}</b>
       <span class="reviews__stars" role="img" aria-label={`${score.rating.toFixed(1)} out of 5 stars`}>
@@ -49,7 +52,7 @@ const star = 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9
     </a>
   </div>
 
-  {items.length > 0 ? (
+  {items.length > 0 && (
     <>
     <div class="reviews__slider" data-reviews aria-roledescription="carousel" aria-label="Google reviews">
       <div class="swiper">
@@ -92,7 +95,9 @@ const star = 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9
     </div>
     {credit && <p class="reviews__credit"><a href={credit.href} target="_blank" rel="noopener">{credit.label}</a></p>}
     </>
-  ) : r.tripadvisorId && (
+  )}
+
+  {r.tripadvisorId && (
     <div class="reviews__widget reviews__widget--tripadvisor">
       <div id="TA_selfserveprop101" class="TA_selfserveprop">
         <ul id="ta-links" class="TA_links">
