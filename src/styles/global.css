@@ -594,10 +594,12 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 
 /* 9 footer */
 .footer { padding: 80px var(--gutter) 96px; }
+/* footer text is all Work Sans, including its headings and the bottom bar */
+.footer .label { font-family: var(--font-body); }
 .footer__cols { display: grid; grid-template-columns: repeat(4, 1fr); }
 .footer__contact { font-style: normal; }
 .footer__contact a[href^="mailto:"] { text-transform: none; letter-spacing: 0.02em; }
-.footer__contact span { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--link); }
+.footer__contact span { font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--link); }
 @media (min-width: 768px) and (max-width: 1100px) {
   .footer__cols { grid-template-columns: 1fr 1fr; row-gap: 48px; }
   .footer__cols > div:nth-child(3) { padding-left: 0; border-left: 0; }
@@ -606,7 +608,7 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .footer__cols > div:first-child { padding-left: 0; justify-items: start; }
 .footer__cols > div + div { border-left: 1px solid rgba(42, 63, 86, 0.2); }
 .footer__nav { display: grid; gap: 10px; }
-.footer__nav a { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--link); transition: opacity 0.3s ease-in-out; }
+.footer__nav a { font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--link); transition: opacity 0.3s ease-in-out; }
 .footer__nav a:hover { opacity: 0.5; }
 .footer__social { display: inline-flex; align-items: center; gap: 10px; }
 .footer__social svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
