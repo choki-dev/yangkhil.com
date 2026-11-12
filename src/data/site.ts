@@ -259,9 +259,6 @@ export const site = {
     // Free Google reviews: the widget ID from featurable.com (Embed > API). Reviews are pulled in when the
     // site is built, shown in the site's own review slider, and refreshed by the daily rebuild.
     featurableId: '',
-    // Google rating badge at the top of the section, as shown on Google Maps (12 Nov 2026). Update it now and then;
-    // when Featurable or the Google API is set up, the live figures are used instead.
-    google: { rating: 4.6, total: 168 },
     // Other review sources are in src/data/reviews.ts.
     // Tripadvisor's free widget is shown only when there are no reviews there yet
     // (ID is the number after "-d" in the listing link); set it to '' to never show it.

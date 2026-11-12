@@ -261,15 +261,6 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .reviews > .label { display: block; margin-bottom: 8px; }
 .reviews__head { margin-left: 33.3%; margin-bottom: 64px; }
 .reviews__head h2 { max-width: 12em; }
-.reviews__google { display: flex; justify-content: center; margin-bottom: 24px; }
-.reviews__score { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 16px; border-radius: 999px; background: var(--white); border: 1px solid rgba(165, 137, 14, 0.2); color: var(--grey); text-decoration: none; }
-.reviews__score:hover { border-color: var(--gold); }
-.reviews__score b { color: var(--navy); font-size: 1.3rem; font-weight: 400; line-height: 1; }
-.reviews__g { width: 22px; height: 22px; }
-.reviews__stars { position: relative; display: inline-block; font-size: 1.05rem; line-height: 1; letter-spacing: 0.08em; color: #dadce0; }
-.reviews__stars::before { content: '★★★★★'; }
-.reviews__stars-on { position: absolute; inset: 0 auto 0 0; overflow: hidden; white-space: nowrap; color: #f6bb06; }
-.reviews__stars-on::before { content: '★★★★★'; }
 .reviews__widget--tripadvisor { display: flex; justify-content: center; }
 .reviews__slider + .reviews__credit + .reviews__widget--tripadvisor, .reviews__slider + .reviews__widget--tripadvisor { margin-top: 56px; }
 /* Tripadvisor's widget adds plain HTML to the page, so it is restyled here to match the review cards */
@@ -285,7 +276,11 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .reviews__widget--tripadvisor .widSSPInformation .widSSPWrap { display: flex !important; align-items: baseline; gap: 8px; }
 .reviews__widget--tripadvisor .widSSPH11 { font-family: var(--font-body) !important; font-size: 0.85rem !important; font-weight: 400 !important; color: var(--grey) !important; }
 .reviews__widget--tripadvisor .widSSPPopIdx, .reviews__widget--tripadvisor .widSSPPopIdx * { font-family: var(--font-body) !important; font-size: 0.95rem !important; color: var(--gold) !important; font-weight: 400 !important; }
-.reviews__widget--tripadvisor .widSSPComponent.widSSPOptional { flex-basis: 100%; margin-top: 28px !important; }
+.reviews__widget--tripadvisor .widSSPComponent.widSSPOptional { flex-basis: 100%; margin-top: 0 !important; }
+/* only the review cards are shown: hide Tripadvisor's logo, name and ranking row */
+.reviews__widget--tripadvisor .widSSPData > .widSSPBranding,
+.reviews__widget--tripadvisor .widSSPData > .widSSPComponent:not(.widSSPOptional),
+.reviews__widget--tripadvisor .widSSPData > .widSSPWrap { display: none !important; }
 .reviews__widget--tripadvisor .widSSPInformation dt, .reviews__widget--tripadvisor .widSSPWriteReview { display: none !important; }
 .reviews__widget--tripadvisor .widSSPReviews > dt { display: none !important; }
 .reviews__widget--tripadvisor .widSSPReviews, .reviews__widget--tripadvisor .widSSPOneReview { margin: 0 !important; padding: 0 !important; }
