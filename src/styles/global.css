@@ -265,6 +265,8 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 .reviews__score b { color: var(--navy); font-size: 1.4rem; font-weight: 400; }
 .reviews__score .review__star { width: 17px; height: 17px; align-self: center; }
 .reviews__widget--tripadvisor { display: flex; justify-content: center; }
+.reviews__credit { margin-top: 14px; text-align: center; font-size: 0.75rem; color: var(--grey); }
+.reviews__credit a { color: inherit; }
 .reviews__links { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; }
 
 /* Google-style review cards in a slider */

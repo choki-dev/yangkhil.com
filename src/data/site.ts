@@ -256,7 +256,10 @@ export const site = {
   reviews: {
     label: 'Guest reviews',
     title: 'What our guests say',
-    // The reviews themselves live in src/data/reviews.ts.
+    // Free Google reviews: the widget ID from featurable.com (Embed > API). Reviews are pulled in when the
+    // site is built, shown in the site's own review slider, and refreshed by the daily rebuild.
+    featurableId: '',
+    // Other review sources are in src/data/reviews.ts.
     // Tripadvisor's free widget is shown only when there are no reviews there yet
     // (ID is the number after "-d" in the listing link); set it to '' to never show it.
     tripadvisorId: '1159262',

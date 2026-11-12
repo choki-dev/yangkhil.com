@@ -30,9 +30,13 @@ Phone number, address, Instagram URL, and the Dining / Experiences / Gift Cards 
 
 The home page shows guest reviews as Google-style cards in a slider (the same approach as callofthedragonbhutan.com). The reviews are part of the site, not a third-party widget, so nothing can expire or break. The old Trustindex widgets were removed when their free trial ended.
 
-The cards come from, in this order:
+The cards come from the first of these that has reviews:
 
-1. **Saved reviews** in `src/data/reviews.ts` (`savedReviews`). Copy reviews from the resort's Google listing into that list, newest first: name, star rating, the text, and the date as a Unix timestamp (the file shows how to get one). The "3 months ago" label is worked out from the date. Only 4 and 5 star reviews are shown, up to 12.
-2. **Live Google reviews (optional).** If `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` are set, the build fetches up to 5 reviews and the overall rating from Google instead, and GitHub rebuilds the site daily. This needs a Google Cloud project with billing and **Places API (New)** enabled. Add the two values under repo **Settings > Secrets and variables > Actions**, or in a git-ignored `.env` file locally.
+1. **Featurable (free, recommended).** Google reviews are pulled in automatically when the site is built, and GitHub rebuilds daily, so new reviews appear on their own. The free plan has unlimited page views and up to 15 reviews, and shows a small "Powered by Featurable" credit.
+   1. Sign up free at [featurable.com](https://featurable.com) and connect the resort's Google Business Profile (you need to be an owner or manager of the listing).
+   2. Create a Google reviews widget, open **Embed > API**, and copy the widget ID.
+   3. Paste it into `featurableId` in `src/data/site.ts`, then commit and push.
+2. **Google Places API (optional).** If `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` are set as GitHub secrets (or in a git-ignored `.env` locally), the build fetches up to 5 reviews and the overall rating. Needs a Google Cloud project with billing and **Places API (New)** enabled.
+3. **Saved reviews** in `src/data/reviews.ts` (`savedReviews`), copied by hand, newest first.
 
-With no reviews from either source, the section shows Tripadvisor's free review widget instead (`tripadvisorId` in `src/data/site.ts`).
+Only 4 and 5 star reviews are shown, up to 12. With no reviews from any source, the section shows Tripadvisor's free review widget instead (`tripadvisorId` in `src/data/site.ts`).
