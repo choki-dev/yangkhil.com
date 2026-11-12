@@ -256,22 +256,10 @@ export const site = {
   reviews: {
     label: 'Guest reviews',
     title: 'What our guests say',
-    // Trustindex widget IDs: the part after "loader.js?" in each code Trustindex gives you.
-    // When set, their live review widgets replace the review cards below (shown in this order).
-    trustindex: [
-      '8ea6312840a5780b4b26f821138', // Google
-      '1f3a07484ef1780a039686c8060', // Tripadvisor
-    ],
-    // Tripadvisor's own review widget (listing ID after "-d" in the Tripadvisor link, e.g. '1159262').
-    // Only needed if the Trustindex Tripadvisor widget above is removed; leave empty otherwise.
-    tripadvisorId: '',
-    // Google reviews are pulled in automatically (see src/data/reviews.ts).
-    // These are only shown when that isn't set up: rating is out of 5; source is 'Google' or 'Tripadvisor'.
-    items: [
-      { quote: 'Paste a guest review from Google here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Google' },
-      { quote: 'Paste a guest review from Tripadvisor here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Tripadvisor' },
-      { quote: 'Paste a guest review from Google here.', name: 'Guest name', date: 'Month 2026', rating: 5, source: 'Google' },
-    ],
+    // The reviews themselves live in src/data/reviews.ts.
+    // Tripadvisor's free widget is shown only when there are no reviews there yet
+    // (ID is the number after "-d" in the listing link); set it to '' to never show it.
+    tripadvisorId: '1159262',
     // Replace with the resort's own listing URLs.
     links: [
       { label: 'Read reviews on Google', href: 'https://www.google.com/maps/search/?api=1&query=Yangkhil+Resort+Trongsa' },

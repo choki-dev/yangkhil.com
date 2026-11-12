@@ -1,11 +1,30 @@
 ---
+// Google-style review slider (same approach as callofthedragonbhutan.com): the reviews are part of the site,
+// not a third-party widget. Live Google reviews when the API key is set, otherwise the saved ones in src/data/reviews.ts.
 import Link from './Link.astro';
 import { site } from '../data/site';
 import { getReviews } from '../data/reviews';
 const { reviews: r } = site;
-// live Google reviews when an API key is set, otherwise the ones in site.ts
 const { items, rating, total, googleUrl } = await getReviews();
 const links = r.links.map((l) => (googleUrl && l.label.includes('Google') ? { ...l, href: googleUrl } : l));
+
+/** "7 months ago" style label (refreshed in the browser so it never goes stale) */
+const relativeTime = (time: number, now = Date.now() / 1000) => {
+  const days = Math.floor((now - time) / 86400);
+  const label = (n: number, unit: string) => `${n} ${unit}${n === 1 ? '' : 's'} ago`;
+  if (days < 1) return 'today';
+  if (days < 7) return label(days, 'day');
+  if (days < 30) return label(Math.round(days / 7), 'week');
+  if (days < 365) return label(Math.round(days / 30), 'month');
+  return label(Math.floor(days / 365), 'year');
+};
+const fullDate = (time: number) => new Date(time * 1000).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+
+// letter avatars in Google's colours, picked from the name so each guest keeps the same one
+const colours = ['#1a73e8', '#d93025', '#188038', '#e37400', '#9334e6', '#c5221f', '#007b83', '#5f6368'];
+const colour = (name: string) => colours[[...name].reduce((n, c) => n + c.charCodeAt(0), 0) % colours.length];
+
+const star = 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z';
 ---
 <section class="reviews" id="reviews" data-header-theme="light">
   <span class="label" data-fade>{r.label}</span>
@@ -13,36 +32,53 @@ const links = r.links.map((l) => (googleUrl && l.label.includes('Google') ? { ..
     <h2 class="title-l" data-split>{r.title}</h2>
     {rating && total && (
       <p class="reviews__score" data-fade>
-        <span class="review__stars" aria-hidden="true">&#9733;</span>
+        <svg class="review__star" viewBox="0 0 24 24" aria-hidden="true"><path d={star} /></svg>
         <b>{rating.toFixed(1)}</b> from {total.toLocaleString('en-GB')} Google reviews
       </p>
     )}
   </div>
-  {r.trustindex.length ? (
-    r.trustindex.map((id) => (
-      <div class="reviews__widget">
-        <script is:inline defer async src={`https://cdn.trustindex.io/loader.js?${id}`}></script>
-      </div>
-    ))
-  ) : (
-  <ul class="reviews__grid">
-    {items.map((item) => (
-      <li class="review" data-fade>
-        <span class="review__stars" role="img" aria-label={`${item.rating} out of 5 stars`}>
-          {Array.from({ length: 5 }, (_, i) => <span aria-hidden="true" class:list={{ 'is-off': i >= item.rating }}>&#9733;</span>)}
-        </span>
-        <blockquote class="review__quote">{item.quote}</blockquote>
-        <div class="review__meta">
-          <span>{item.name}</span>
-          <span class="label">
-            {item.date} &middot; {item.href ? <a href={item.href} target="_blank" rel="noopener">{item.source}</a> : item.source}
-          </span>
+
+  {items.length > 0 ? (
+    <div class="reviews__slider" data-reviews aria-roledescription="carousel" aria-label="Google reviews">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {items.map((item) => (
+            <article class="swiper-slide review">
+              <header class="review__head">
+                {item.photo
+                  ? <img class="review__avatar" src={item.photo} alt="" width="40" height="40" loading="lazy" referrerpolicy="no-referrer" />
+                  : <span class="review__avatar" style={`background:${colour(item.name)}`} aria-hidden="true">{[...item.name.trim()][0]}</span>}
+                <div class="review__who">
+                  <h3 class="review__name">{item.name}</h3>
+                  <time class="review__date" datetime={new Date(item.time * 1000).toISOString()} title={fullDate(item.time)} data-time={item.time}>
+                    {relativeTime(item.time)}
+                  </time>
+                </div>
+                <a class="review__source" href={item.href ?? googleUrl ?? links.find((l) => l.label.includes('Google'))?.href} target="_blank" rel="noopener" title="Posted on Google">
+                  <svg viewBox="0 0 48 48" width="20" height="20" role="img" aria-label="Posted on Google">
+                    <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z" />
+                    <path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
+                    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A11.9 11.9 0 0 1 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+                    <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z" />
+                  </svg>
+                </a>
+              </header>
+              <p class="review__stars" role="img" aria-label={`Rated ${item.rating} out of 5`}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <svg class:list={['review__star', { 'is-off': i >= item.rating }]} viewBox="0 0 24 24" aria-hidden="true"><path d={star} /></svg>
+                ))}
+                <svg class="review__verified" viewBox="0 0 24 24" aria-hidden="true"><title>Verified review</title><path d="M12 1.5l2.6 1.9 3.2-.1 1 3 2.6 1.9-1 3.1 1 3-2.6 1.9-1 3.1-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3.1-2.6-1.9 1-3-1-3.1 2.6-1.9 1-3 3.2.1zm-1.3 13.9 6-6-1.4-1.4-4.6 4.6-2.3-2.3L7 11.7z" /></svg>
+              </p>
+              <div class="review__text" set:html={item.text} data-text />
+              <button class="review__more" type="button" aria-expanded="false" data-more>Read more</button>
+            </article>
+          ))}
         </div>
-      </li>
-    ))}
-  </ul>
-  )}
-  {r.tripadvisorId && (
+      </div>
+      <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="Previous reviews" data-reviews-prev><svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" /></svg></button>
+      <button class="reviews__arrow reviews__arrow--next" type="button" aria-label="Next reviews" data-reviews-next><svg viewBox="0 0 10 16" aria-hidden="true"><path d="m2 2 6 6-6 6" /></svg></button>
+    </div>
+  ) : r.tripadvisorId && (
     <div class="reviews__widget reviews__widget--tripadvisor">
       <div id="TA_selfserveprop101" class="TA_selfserveprop">
         <ul id="ta-links" class="TA_links">
@@ -52,7 +88,63 @@ const links = r.links.map((l) => (googleUrl && l.label.includes('Google') ? { ..
       <script is:inline async src={`https://www.jscache.com/wejs?wtype=selfserveprop&uniq=101&locationId=${r.tripadvisorId}&lang=en_US&rating=true&nreviews=5&writereviewlink=true&popIdx=true&iswide=true&border=false&display_version=2`}></script>
     </div>
   )}
+
   <div class="reviews__links">
     {links.map((l) => <Link href={l.href} label={l.label} />)}
   </div>
 </section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, Navigation } from 'swiper/modules';
+
+  const slider = document.querySelector<HTMLElement>('[data-reviews]');
+  if (slider) {
+    // keep "x months ago" current between rebuilds
+    const now = Date.now() / 1000;
+    const label = (n: number, unit: string) => `${n} ${unit}${n === 1 ? '' : 's'} ago`;
+    slider.querySelectorAll<HTMLElement>('time[data-time]').forEach((el) => {
+      const days = Math.floor((now - Number(el.dataset.time)) / 86400);
+      el.textContent =
+        days < 1 ? 'today'
+        : days < 7 ? label(days, 'day')
+        : days < 30 ? label(Math.round(days / 7), 'week')
+        : days < 365 ? label(Math.round(days / 30), 'month')
+        : label(Math.floor(days / 365), 'year');
+    });
+
+    // "Read more" only where the text is longer than four lines
+    // (checked again once styles and fonts have loaded, and when the window is resized)
+    const cards = Array.from(slider.querySelectorAll<HTMLElement>('.review')).map((card) => ({
+      text: card.querySelector<HTMLElement>('[data-text]')!,
+      more: card.querySelector<HTMLButtonElement>('[data-more]')!,
+    }));
+    const fit = () => cards.forEach(({ text, more }) => {
+      if (!text.classList.contains('is-open')) more.hidden = text.scrollHeight <= text.clientHeight + 1;
+    });
+    fit();
+    if (document.readyState !== 'complete') window.addEventListener('load', fit, { once: true });
+    document.fonts?.ready.then(fit);
+    window.addEventListener('resize', fit);
+    cards.forEach(({ text, more }) => {
+      more.addEventListener('click', () => {
+        const open = text.classList.toggle('is-open');
+        more.textContent = open ? 'Hide' : 'Read more';
+        more.setAttribute('aria-expanded', String(open));
+      });
+    });
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    new Swiper(slider.querySelector<HTMLElement>('.swiper')!, {
+      modules: [Autoplay, Navigation],
+      slidesPerView: 1,
+      spaceBetween: 16,
+      speed: 600,
+      rewind: true,
+      autoHeight: false,
+      autoplay: reduced ? false : { delay: 6000, pauseOnMouseEnter: true, disableOnInteraction: false },
+      navigation: { prevEl: slider.querySelector<HTMLElement>('[data-reviews-prev]'), nextEl: slider.querySelector<HTMLElement>('[data-reviews-next]') },
+      breakpoints: { 768: { slidesPerView: 2 }, 1100: { slidesPerView: 3 } },
+    });
+  }
+</script>

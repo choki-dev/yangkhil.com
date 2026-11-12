@@ -26,19 +26,13 @@ npm run preview
 
 Phone number, address, Instagram URL, and the Dining / Experiences / Gift Cards links (currently anchors to on-page sections).
 
-## Guest reviews (pulled from Google)
+## Guest reviews
 
-The reviews section loads the resort's Google reviews when the site is built (`src/data/reviews.ts`), the same way WordPress review plugins do. GitHub rebuilds the site every day, so new reviews show up on their own. It shows the overall rating and up to 6 reviews with 4 or 5 stars. Google only shares 5 reviews, the ones it ranks most relevant.
+The home page shows guest reviews as Google-style cards in a slider (the same approach as callofthedragonbhutan.com). The reviews are part of the site, not a third-party widget, so nothing can expire or break. The old Trustindex widgets were removed when their free trial ended.
 
-Setup:
+The cards come from, in this order:
 
-1. In Google Cloud Console, create a project, turn on billing, enable **Places API (New)**, and create an API key restricted to that API. A daily rebuild stays far inside Google's free monthly allowance.
-2. Find the resort's Place ID with Google's Place ID Finder (search "Yangkhil Resort").
-3. On GitHub: repo **Settings > Secrets and variables > Actions**, add `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID`.
-4. To see live reviews locally, put the same two lines in a `.env` file in the project root (it is git-ignored):
-   ```
-   GOOGLE_PLACES_API_KEY=your-key
-   GOOGLE_PLACE_ID=your-place-id
-   ```
+1. **Saved reviews** in `src/data/reviews.ts` (`savedReviews`). Copy reviews from the resort's Google listing into that list, newest first: name, star rating, the text, and the date as a Unix timestamp (the file shows how to get one). The "3 months ago" label is worked out from the date. Only 4 and 5 star reviews are shown, up to 12.
+2. **Live Google reviews (optional).** If `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` are set, the build fetches up to 5 reviews and the overall rating from Google instead, and GitHub rebuilds the site daily. This needs a Google Cloud project with billing and **Places API (New)** enabled. Add the two values under repo **Settings > Secrets and variables > Actions**, or in a git-ignored `.env` file locally.
 
-Without the key, or if Google can't be reached, the site shows the reviews written in `site.ts` instead.
+With no reviews from either source, the section shows Tripadvisor's free review widget instead (`tripadvisorId` in `src/data/site.ts`).
