@@ -1,0 +1,9 @@
+---
+// centred section title with a large, faint italic word behind it
+interface Props { script: string; title: string; tag?: 'h1' | 'h2' }
+const { script, title, tag: Tag = 'h2' } = Astro.props;
+---
+<div class="head">
+  <span class="head__script" aria-hidden="true">{script}</span>
+  <Tag class="head__title" data-split>{title}</Tag>
+</div>

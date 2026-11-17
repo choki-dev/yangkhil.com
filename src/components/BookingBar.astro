@@ -1,0 +1,96 @@
+---
+import { site } from '../data/site';
+// availability bar under the hero: dates and guests go to the booking page as ?checkin=&checkout=&adults=&children=
+---
+<section class="booking-bar" aria-label="Check availability" data-header-theme="light">
+  <form class="booking-bar__form" action={site.bookUrl} method="get" data-booking-bar>
+    <label class="booking-bar__field">
+      <span class="booking-bar__label">Check in</span>
+      <input name="checkin" type="date" required data-bb-in />
+    </label>
+    <label class="booking-bar__field">
+      <span class="booking-bar__label">Check out</span>
+      <input name="checkout" type="date" required data-bb-out />
+    </label>
+    <div class="booking-bar__field booking-bar__guests">
+      <span class="booking-bar__label" id="bb-guests-label">Guests</span>
+      <button class="booking-bar__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="bb-guests" aria-labelledby="bb-guests-label bb-guests-count" data-bb-toggle>
+        <span id="bb-guests-count" data-bb-total>2 guests</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.3 0-8 1.7-8 5v1h16v-1c0-3.3-4.7-5-8-5Z" /></svg>
+      </button>
+      <div class="booking-bar__pop" id="bb-guests" hidden data-bb-pop>
+        <div class="booking-bar__row">
+          <span><b data-bb-show="adults">2</b> Adults</span>
+          <span class="booking-bar__step">
+            <button type="button" aria-label="Fewer adults" data-bb-step="adults" data-bb-by="-1">&minus;</button>
+            <button type="button" aria-label="More adults" data-bb-step="adults" data-bb-by="1">+</button>
+          </span>
+        </div>
+        <div class="booking-bar__row">
+          <span><b data-bb-show="children">0</b> Children</span>
+          <span class="booking-bar__step">
+            <button type="button" aria-label="Fewer children" data-bb-step="children" data-bb-by="-1">&minus;</button>
+            <button type="button" aria-label="More children" data-bb-step="children" data-bb-by="1">+</button>
+          </span>
+        </div>
+        <button class="booking-bar__apply" type="button" data-bb-apply>Apply</button>
+      </div>
+      <input type="hidden" name="adults" value="2" data-bb-input="adults" />
+      <input type="hidden" name="children" value="0" data-bb-input="children" />
+    </div>
+    <button class="btn booking-bar__submit" type="submit">Check availability</button>
+  </form>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-booking-bar]');
+  if (form) {
+    const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const checkin = form.querySelector<HTMLInputElement>('[data-bb-in]')!;
+    const checkout = form.querySelector<HTMLInputElement>('[data-bb-out]')!;
+    const today = new Date();
+    checkin.min = iso(today);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    checkout.min = iso(tomorrow);
+    checkin.addEventListener('change', () => {
+      if (!checkin.value) return;
+      const next = new Date(`${checkin.value}T00:00`);
+      next.setDate(next.getDate() + 1);
+      checkout.min = iso(next);
+      if (checkout.value && checkout.value < checkout.min) checkout.value = '';
+    });
+
+    // guests popover with adult / children steppers
+    const toggle = form.querySelector<HTMLButtonElement>('[data-bb-toggle]')!;
+    const pop = form.querySelector<HTMLElement>('[data-bb-pop]')!;
+    const total = form.querySelector<HTMLElement>('[data-bb-total]')!;
+    const limits: Record<string, [number, number]> = { adults: [1, 30], children: [0, 30] };
+    const count: Record<string, number> = { adults: 2, children: 0 };
+    const render = () => {
+      for (const key of Object.keys(count)) {
+        form.querySelector<HTMLElement>(`[data-bb-show="${key}"]`)!.textContent = String(count[key]);
+        form.querySelector<HTMLInputElement>(`[data-bb-input="${key}"]`)!.value = String(count[key]);
+      }
+      const n = count.adults + count.children;
+      total.textContent = `${n} guest${n === 1 ? '' : 's'}`;
+    };
+    const open = (show: boolean) => {
+      pop.hidden = !show;
+      toggle.setAttribute('aria-expanded', String(show));
+    };
+    toggle.addEventListener('click', () => open(toggle.getAttribute('aria-expanded') !== 'true'));
+    form.querySelectorAll<HTMLButtonElement>('[data-bb-step]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const key = b.dataset.bbStep!;
+        const [min, max] = limits[key];
+        count[key] = Math.min(max, Math.max(min, count[key] + Number(b.dataset.bbBy)));
+        render();
+      }),
+    );
+    form.querySelector('[data-bb-apply]')!.addEventListener('click', () => { open(false); toggle.focus(); });
+    document.addEventListener('click', (e) => { if (!pop.hidden && !form.querySelector('.booking-bar__guests')!.contains(e.target as Node)) open(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pop.hidden) { open(false); toggle.focus(); } });
+    render();
+  }
+</script>

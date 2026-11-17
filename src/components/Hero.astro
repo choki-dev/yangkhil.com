@@ -1,6 +1,5 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import Link from './Link.astro';
 import { site } from '../data/site';
 const { hero } = site;
 const widths = [1280, 1920, 2560, 3200];
@@ -21,14 +20,22 @@ const later = await Promise.all(hero.slides.slice(1).map((s) => getImage({ src: 
       </div>
     ))}
   </div>
+  <!-- centred copy: label, script headline, subheading and two buttons -->
   <div class="hero__copy">
-    <span class="label">{hero.label}</span>
+    <span class="label" data-fade>{hero.label}</span>
     <h1 data-split data-hero-title>
       {hero.titleLines.map((l) => <span class="hero__line">{l}</span>)}
     </h1>
-    <div class="hero__ctas">
-      <Link href={hero.link.href} label={hero.link.label} />
-      <Link href={hero.secondary.href} label={hero.secondary.label} />
+    <p class="hero__text" data-fade>{hero.text}</p>
+    <div class="hero__ctas" data-fade>
+      <a class="btn" href={hero.link.href}>{hero.link.label}</a>
+      <a class="btn btn--ghost" href={hero.secondary.href}>{hero.secondary.label}</a>
     </div>
   </div>
+  {hero.slides.length > 1 && (
+    <>
+      <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Previous photo" data-hero-prev><svg viewBox="0 0 14 26" aria-hidden="true"><path d="M13 1 1 13l12 12" /></svg></button>
+      <button class="hero__arrow hero__arrow--next" type="button" aria-label="Next photo" data-hero-next><svg viewBox="0 0 14 26" aria-hidden="true"><path d="m1 1 12 12L1 25" /></svg></button>
+    </>
+  )}
 </section>

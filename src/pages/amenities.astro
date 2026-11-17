@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import PageHero from '../components/PageHero.astro';
 import Link from '../components/Link.astro';
 import BookBand from '../components/BookBand.astro';
+import AmenityTiles from '../components/AmenityTiles.astro';
 import Footer from '../components/Footer.astro';
 import Chat from '../components/Chat.astro';
 import { site } from '../data/site';
@@ -15,14 +16,10 @@ const { amenitiesPage: a } = site;
   <main>
     <PageHero label={a.label} title={a.title} image={a.hero} alt={a.heroAlt} />
 
-    <section class="intro" data-header-theme="light">
-      <p class="intro__text" data-fade>{a.text}</p>
-      <nav class="jump" aria-label="Amenities on this page">
-        {site.amenities.map((m) => <a href={`#${m.id}`}>{m.title}</a>)}
-      </nav>
-    </section>
+    <!-- services grid; each tile jumps to its write-up below -->
+    <AmenityTiles script="Services" title="Features & facilities" text={a.text} local />
 
-    <section class="features" data-header-theme="light">
+    <section class="features features--services" data-header-theme="light">
       {site.amenities.map((m) => {
         const photos = [{ image: m.image, alt: m.alt }, ...(m.gallery ?? [])];
         return (

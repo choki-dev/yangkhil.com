@@ -2,25 +2,28 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import Retreat from '../components/Retreat.astro';
-import CardSlider from '../components/CardSlider.astro';
+import BookingBar from '../components/BookingBar.astro';
 import About from '../components/About.astro';
 import Reviews from '../components/Reviews.astro';
+import RoomSlider from '../components/RoomSlider.astro';
+import AmenityTiles from '../components/AmenityTiles.astro';
 import Explore from '../components/Explore.astro';
-import Contact from '../components/Contact.astro';
+import BookBand from '../components/BookBand.astro';
 import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
 import Chat from '../components/Chat.astro';
 ---
 <Layout title="Yangkhil Resort | Mountain retreat in Trongsa, Bhutan" description="Yangkhil Resort is a mountain retreat in Trongsa, Bhutan, with timber rooms, quiet gardens and warm Bhutanese hospitality.">
   <Header />
   <main>
     <Hero />
+    <BookingBar />
     <About />
-    <Reviews />
-    <Retreat />
-    <CardSlider />
+    <RoomSlider />
+    <AmenityTiles slider />
     <Explore />
-    <Contact />
+    <Reviews />
+    <BookBand align="left" title="Plan your stay in the heart of Bhutan." image={site.booking.image} />
   </main>
   <Footer />
   <Chat />

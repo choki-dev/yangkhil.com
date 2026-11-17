@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import { site, page } from '../data/site';
+// services: photo tiles with the name in the middle
+// slider (home page): four across the full width, sliding through all amenities
+// grid (Amenities page, local): tall tiles, four to a row, each jumping to its write-up below
+interface Props { script?: string; title?: string; text?: string; local?: boolean; slider?: boolean }
+const { script = 'Services', title = 'Resort amenities', text, local = false, slider = false } = Astro.props;
+const href = (id: string) => (local ? `#${id}` : `${page.amenities}#${id}`);
+---
+<section class:list={['tiles-section', slider ? 'tiles-section--slider' : 'tiles-section--services']} id={local ? 'services' : 'amenities'} data-header-theme="light">
+  <SectionHead script={script} title={title} />
+  {text && <p class="tiles-section__intro" data-fade>{text}</p>}
+  {slider ? (
+    <div class="services-slider" data-services>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {site.amenities.map((a) => (
+            <div class="swiper-slide">
+              <a class="tile tile--plain" href={href(a.id)}>
+                <div class="frame">
+                  <Image src={a.image} alt={a.alt} widths={[500, 800, 1100]} quality={88} sizes="(max-width: 767px) 85vw, (max-width: 1100px) 45vw, 25vw" loading="lazy" />
+                </div>
+                <span class="tile__body"><span class="tile__title">{a.title}</span></span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="dashes" data-services-dots></div>
+    </div>
+  ) : (
+    <ul class="tiles tiles--services">
+      {site.amenities.map((a) => (
+        <li>
+          <a class="tile" href={href(a.id)}>
+            <div class="frame">
+              <Image src={a.image} alt={a.alt} widths={[500, 800, 1100]} quality={88} sizes="(max-width: 767px) 50vw, (max-width: 1100px) 33vw, 260px" loading="lazy" />
+            </div>
+            <span class="tile__body">
+              <span class="tile__title">{a.title}</span>
+              <span class="tile__text">{a.text}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, Pagination } from 'swiper/modules';
+
+  // home page amenities slider: 4 across on desktop, autoplays, pauses on hover
+  const wrap = document.querySelector<HTMLElement>('[data-services]');
+  if (wrap) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    new Swiper(wrap.querySelector<HTMLElement>('.swiper')!, {
+      modules: [Autoplay, Pagination],
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      speed: 800,
+      loop: true,
+      autoplay: reduced ? false : { delay: 4000, pauseOnMouseEnter: true, disableOnInteraction: false },
+      pagination: { el: wrap.querySelector<HTMLElement>('[data-services-dots]'), clickable: true, bulletClass: 'dashes__dash', bulletActiveClass: 'is-active' },
+      breakpoints: { 560: { slidesPerView: 2.2, spaceBetween: 24 }, 900: { slidesPerView: 3.2, spaceBetween: 40 }, 1101: { slidesPerView: 4, spaceBetween: 64 } },
+    });
+  }
+</script>

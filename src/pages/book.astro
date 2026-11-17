@@ -151,6 +151,22 @@ const reach: Record<string, string> = {
     if (room && Array.from(select.options).some((o) => o.value === room)) select.value = room;
     const interest = params.get('interest');
     if (interest) field<HTMLTextAreaElement>('message').value = `I'm also interested in: ${interest}`;
+    // ?checkin=&checkout=&adults=&children= from the availability bar on the home page
+    const date = /^\d{4}-\d{2}-\d{2}$/;
+    const inDate = params.get('checkin') ?? '';
+    const outDate = params.get('checkout') ?? '';
+    if (date.test(inDate) && inDate >= checkin.min) { checkin.value = inDate; checkin.dispatchEvent(new Event('change')); }
+    if (date.test(outDate) && outDate > checkin.value) checkout.value = outDate;
+    const adults = Math.max(0, Math.floor(Number(params.get('adults')) || 0));
+    const children = Math.max(0, Math.floor(Number(params.get('children')) || 0));
+    if (adults + children > 0) {
+      field<HTMLInputElement>('guests').value = String(Math.min(60, adults + children));
+      if (children > 0) {
+        const msg = field<HTMLTextAreaElement>('message');
+        const note = `${adults} adult${adults === 1 ? '' : 's'} and ${children} child${children === 1 ? '' : 'ren'}.`;
+        msg.value = msg.value ? `${note}\n${msg.value}` : note;
+      }
+    }
 
     form.addEventListener('input', update);
     form.addEventListener('change', update);

@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import Link from './Link.astro';
+import SectionHead from './SectionHead.astro';
+import { site, page } from '../data/site';
+const { roomsSection: r } = site;
+const bookRoom = (name: string) => `${page.book}?room=${encodeURIComponent(name)}`;
+---
+<!-- home page "Accommodations": one room per slide, photo left and a white card right, dots below -->
+<section class="room-slider" id="accommodations" data-header-theme="light">
+  <SectionHead script="Our" title="Rooms" />
+  <p class="room-slider__intro" data-fade>{r.text}</p>
+  <div class="room-slider__wrap" data-room-slider>
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {r.rooms.map((room) => (
+          <article class="swiper-slide room-slide">
+            <div class="frame room-slide__img">
+              <Image src={room.image} alt={room.alt} widths={[700, 1000, 1400]} quality={88} sizes="(max-width: 767px) 100vw, 50vw" loading="lazy" />
+            </div>
+            <div class="room-slide__card">
+              <h3 class="room-slide__name">{room.name}</h3>
+              <p class="room-slide__sub">{room.guests} &middot; {room.bed}</p>
+              <p class="room-slide__text">{r.summary}</p>
+              <div class="room-slide__foot">
+                <a class="room-slide__more" href={`${page.rooms}#our-rooms`}>View room</a>
+                <Link href={bookRoom(room.name)} label="Book this room" />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+    <div class="dots" data-room-dots></div>
+  </div>
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, Pagination } from 'swiper/modules';
+
+  const wrap = document.querySelector<HTMLElement>('[data-room-slider]');
+  if (wrap) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    new Swiper(wrap.querySelector<HTMLElement>('.swiper')!, {
+      modules: [Autoplay, Pagination],
+      slidesPerView: 1,
+      spaceBetween: 24,
+      speed: 800,
+      rewind: true,
+      autoplay: reduced ? false : { delay: 6000, pauseOnMouseEnter: true, disableOnInteraction: false },
+      pagination: { el: wrap.querySelector<HTMLElement>('[data-room-dots]'), clickable: true, bulletClass: 'dots__dot', bulletActiveClass: 'is-active' },
+    });
+  }
+</script>

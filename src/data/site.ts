@@ -7,6 +7,7 @@ import outdoor2 from '../assets/outdoor2.jpg';
 import outdoorView from '../assets/outdoor-view.jpg';
 import architecture from '../assets/architecture.jpg';
 import logo from '../assets/logo-yangkhil.png';
+import logoWhite from '../assets/logo-white.png';
 import room from '../assets/room.jpg';
 import room2 from '../assets/room2.jpg';
 import room3 from '../assets/room3.jpg';
@@ -47,6 +48,8 @@ export const homeLink = (href: string, path: string) =>
 export const site = {
   name: 'Yangkhil Resort',
   logo,
+  // white logo for the dark footer
+  logoWhite,
   bookUrl: page.book,
   nav: [
     { label: 'About Us', href: page.about },
@@ -60,10 +63,15 @@ export const site = {
       { image: resort3, alt: 'Prayer flags above the Yangkhil gardens and main building' },
       { image: resort, alt: 'Yangkhil cottage with carved wooden balconies and a curved staircase' },
       { image: outdoor2, alt: 'Garden table laid for dinner beside flower beds' },
+      { image: view, alt: 'Trongsa Dzong across the valley, framed by wisteria' },
+      { image: resort2, alt: 'Yangkhil cottage with painted Bhutanese woodwork and forested mountains beyond' },
+      { image: outdoorView, alt: 'Garden shrine and waterfall among the greenery at Yangkhil' },
     ],
-    label: 'Trongsa, Bhutan',
-    // One entry per line of the headline.
-    titleLines: ['Discover the heart', 'of Bhutan at Yangkhil', 'Resort, Trongsa.'],
+    label: 'Since 2004 · Trongsa, Bhutan',
+    // script headline; one entry per line
+    titleLines: ['Welcome to Yangkhil'],
+    // subheading from the brief
+    text: 'Discover the heart of Bhutan at Yangkhil Resort, Trongsa.',
     link: { label: 'Book your stay', href: page.book },
     secondary: { label: 'Explore the resort', href: page.amenities },
   },
@@ -105,6 +113,8 @@ export const site = {
       { title: 'Daily housekeeping', text: 'Fresh towels and a tidy room every day.' },
     ],
     note: 'Rates are subject to 10% Bhutan sales tax and 5% service charge.',
+    // short description on each room card of the home page carousel
+    summary: 'A welcoming room with modern comforts and a balcony looking out over the river valley, a quiet place to rest after a day of exploring Bhutan.',
     // gallery: extra photos for each room's carousel (add more photos of a room here)
     rooms: [
       { name: 'Premium Single', guests: '1 guest', bed: 'Single bed', image: room3, alt: 'Premium Single room being made up by a member of the team', gallery: [] },
@@ -199,6 +209,14 @@ export const site = {
     title: 'About Yangkhil',
     text: 'Since 2004, Yangkhil Resort has welcomed guests with authentic Bhutanese hospitality and contemporary comfort. Set against panoramic views of Trongsa Dzong, Taa Dzong and the Mangde Chhu valley, Yangkhil offers a peaceful retreat in the heart of Bhutan.',
     link: { label: 'Learn more', href: page.about },
+    // faint script word behind the title
+    script: 'Welcome',
+    // row of three photos under the text
+    gallery: [
+      { image: dine, alt: 'A member of the Yangkhil team in a kira arranging fruit and flowers on a terrace table' },
+      { image: viewSit, alt: 'Lounge seating beside tall windows with mountain views' },
+      { image: resort, alt: 'Yangkhil cottage with carved wooden balconies and a curved staircase' },
+    ],
     image: sitting,
     alt: 'Flowers in a Yangkhil Resort vase and books on a glass table beside a cane armchair',
     // which part of the photo stays in view when the frame crops it (keeps the vase in shot)

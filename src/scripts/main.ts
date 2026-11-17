@@ -89,24 +89,30 @@ if (reduced) {
     if (document.readyState === 'complete') loadLater();
     else window.addEventListener('load', loadLater, { once: true });
     let current = 0;
-    const show = (i: number) => {
+    const show = (i: number, from: number) => {
       const next = slides[i];
-      const prev = slides[(i + slides.length - 1) % slides.length];
+      const prev = slides[from];
       gsap.set(next, { zIndex: 2 });
       gsap.fromTo(next, { opacity: 0 }, { opacity: 1, duration: FADE, ease: 'power1.inOut', overwrite: true });
       // keeps zooming through its own fade-out so the motion never snaps back
       gsap.fromTo(next, { scale: 1 }, { scale: 1.14, duration: HOLD + FADE * 2, ease: 'none' });
       if (prev !== next) {
         gsap.set(prev, { zIndex: 1 });
-        gsap.to(prev, { opacity: 0, duration: FADE, ease: 'power1.inOut' });
+        gsap.to(prev, { opacity: 0, duration: FADE, ease: 'power1.inOut', overwrite: 'auto' });
       }
     };
-    show(0);
-    gsap.delayedCall(HOLD, function tick() {
-      current = (current + 1) % slides.length;
-      show(current);
-      gsap.delayedCall(HOLD, tick);
-    });
+    // auto-advance; the arrows jump straight to a slide and restart the timer
+    let timer = gsap.delayedCall(HOLD, () => go(current + 1));
+    const go = (i: number) => {
+      const from = current;
+      current = (i + slides.length) % slides.length;
+      show(current, from);
+      timer.kill();
+      timer = gsap.delayedCall(HOLD, () => go(current + 1));
+    };
+    show(0, 0);
+    $('[data-hero-prev]')?.addEventListener('click', () => go(current - 1));
+    $('[data-hero-next]')?.addEventListener('click', () => go(current + 1));
   }
   if (heroTitle) reveal(wordsByEl.get(heroTitle)!, 0.3);
 

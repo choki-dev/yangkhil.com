@@ -1,10 +1,26 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Link from './Link.astro';
 import { site } from '../data/site';
-interface Props { title?: string }
-const { title = 'Ready to stay with us?' } = Astro.props;
+// full-width photo band with a reservation call to action
+// centred (default): faint italic words behind the title and a solid Book now button
+// left: title on the left (no faint word behind it) and an italic "Make a reservation" link
+interface Props { title?: string; script?: string; image?: ImageMetadata; alt?: string; align?: 'center' | 'left' }
+const { title = 'Ready to stay with us?', script, image = site.explore.hero, alt = '', align = 'center' } = Astro.props;
+const word = script ?? (align === 'left' ? '' : 'Make a reservation');
 ---
-<section class="book-band" data-header-theme="dark">
-  <h2 class="title-l" data-split>{title}</h2>
-  <Link href={site.bookUrl} label="Book now" />
+<section class:list={['book-band on-dark', { 'book-band--left': align === 'left' }]} data-header-theme="dark">
+  <div class="frame fill" data-parallax>
+    <Image src={image} alt={alt} widths={[1280, 1920, 2560]} quality={85} sizes="100vw" loading="lazy" />
+  </div>
+  <div class="book-band__copy">
+    <div class="head">
+      {word && <span class="head__script" aria-hidden="true">{word}</span>}
+      <h2 class="head__title" data-split>{title}</h2>
+    </div>
+    {align === 'left'
+      ? <Link href={site.bookUrl} label="Make a reservation" />
+      : <a class="btn" href={site.bookUrl}>Book now</a>}
+  </div>
 </section>

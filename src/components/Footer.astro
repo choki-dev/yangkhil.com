@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { site, homeLink } from '../data/site';
 const { footer } = site;
 const icons: Record<string, string> = {
@@ -6,39 +7,57 @@ const icons: Record<string, string> = {
   instagram: 'M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm0 7.4a2.9 2.9 0 1 1 0-5.8 2.9 2.9 0 0 1 0 5.8ZM16.8 6.2a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM12 3.5c-2.3 0-2.6 0-3.5.1-3 .1-4.7 1.8-4.8 4.8-.1.9-.1 1.2-.1 3.6s0 2.7.1 3.6c.1 3 1.8 4.7 4.8 4.8.9.1 1.2.1 3.5.1s2.7 0 3.6-.1c3-.1 4.7-1.8 4.8-4.8.1-.9.1-1.2.1-3.6s0-2.7-.1-3.6c-.1-3-1.8-4.7-4.8-4.8-.9-.1-1.2-.1-3.6-.1Zm0 1.5c2.3 0 2.6 0 3.5.1 2.1.1 3.2 1.1 3.3 3.3.1.9.1 1.2.1 3.5s0 2.6-.1 3.5c-.1 2.2-1.1 3.2-3.3 3.3-.9.1-1.2.1-3.5.1s-2.6 0-3.5-.1c-2.2-.1-3.2-1.1-3.3-3.3-.1-.9-.1-1.2-.1-3.5s0-2.6.1-3.5c.1-2.2 1.1-3.2 3.3-3.3.9-.1 1.2-.1 3.5-.1Z',
   tiktok: 'M16.6 3h-3.2v12.4a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.5a6 6 0 1 0 5.1 5.9V9.1a7.6 7.6 0 0 0 4.4 1.4V7.3c-2.4 0-4.4-1.9-4.4-4.3Z',
 };
+// small icons beside the contact lines
+const info: Record<string, string> = {
+  phone: 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z',
+  email: 'M4 5h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2Zm0 2v.5l8 5 8-5V7H4Zm16 2.9-7.5 4.7c-.3.2-.7.2-1 0L4 9.9V17h16V9.9Z',
+  place: 'M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z',
+};
+const iconFor = (href?: string) => (href?.startsWith('tel:') ? info.phone : href?.startsWith('mailto:') ? info.email : info.place);
+const home = (href: string) => homeLink(href, Astro.url.pathname);
 ---
-<footer class="footer" data-header-theme="light">
+<footer class="footer" data-header-theme="dark">
   <div class="footer__cols">
     <div>
-      <span class="label">Navigation</span>
-      <nav class="footer__nav" aria-label="Footer">
-        {site.nav.map((l) => <a href={homeLink(l.href, Astro.url.pathname)}>{l.label}</a>)}
-      </nav>
-    </div>
-    <div>
-      <span class="label">Contact</span>
-      <address class="footer__nav footer__contact">
-        {site.contact.details.map((d) => (d.href ? <a href={d.href}>{d.text}</a> : <span>{d.text}</span>))}
+      <h2 class="footer__head">Info</h2>
+      <address class="footer__list footer__info">
+        {site.contact.details.map((d) => (
+          <span class="footer__line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={iconFor(d.href)} /></svg>
+            {d.href ? <a href={d.href}>{d.text}</a> : <span>{d.text}</span>}
+          </span>
+        ))}
       </address>
     </div>
     <div>
-      <span class="label">Quick links</span>
-      <nav class="footer__nav" aria-label="Quick links">
-        {footer.quickLinks.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+      <h2 class="footer__head">Explore</h2>
+      <nav class="footer__list" aria-label="Footer">
+        {site.nav.map((l) => <a href={home(l.href)}>{l.label}</a>)}
+        <a href={site.bookUrl}>Book your stay</a>
       </nav>
     </div>
     <div>
-      <span class="label">Follow us</span>
-      <nav class="footer__nav" aria-label="Social">
-        {footer.social.map((l) => (
-          <a class="footer__social" href={l.href} target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons[l.icon]} /></svg>
-            {l.label}
-          </a>
-        ))}
+      <h2 class="footer__head">Quick links</h2>
+      <nav class="footer__list" aria-label="Quick links">
+        {footer.quickLinks.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
       </nav>
     </div>
   </div>
-  <hr />
-  <div class="footer__bar label"><span>Yangkhil Resort &copy; 2026</span><span>Website designed and developed by <a class="footer__credit" href="https://abit.bt/" target="_blank" rel="noopener">aBit Private Limited</a></span></div>
+
+  <div class="footer__bottom">
+    <nav class="footer__social" aria-label="Social">
+      {footer.social.map((l) => (
+        <a href={l.href} target="_blank" rel="noopener" aria-label={l.label}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons[l.icon]} /></svg>
+        </a>
+      ))}
+    </nav>
+    <a class="footer__logo" href={home('#top')} aria-label={`${site.name} home`}>
+      <Image src={site.logoWhite} alt={site.name} height={56} densities={[1, 2]} loading="lazy" />
+    </a>
+    <p class="footer__bar">
+      <span>Yangkhil Resort &copy; 2026</span>
+      <span>Website designed and developed by <a class="footer__credit" href="https://abit.bt/" target="_blank" rel="noopener">aBit Private Limited</a></span>
+    </p>
+  </div>
 </footer>

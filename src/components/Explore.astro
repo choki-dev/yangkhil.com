@@ -1,31 +1,23 @@
 ---
 import { Image } from 'astro:assets';
-import Link from './Link.astro';
-import { site, placePage } from '../data/site';
+import { site } from '../data/site';
 const { explore: e } = site;
-// the home page shows one place; the full list is on the Explore Trongsa page
-const p = e.posts[0];
 ---
-<section class="explore" id="explore-trongsa" data-header-theme="light">
-  <span class="label" data-fade>{e.label}</span>
-  <div class="explore__head">
-    <h2 class="title-l" data-split>{e.title}</h2>
-    <div class="explore__foot">
-      <p class="text" data-fade>{e.text}</p>
-      <Link href={e.link.href} label={e.link.label} />
-    </div>
+<!-- home page Explore Trongsa: title on the left, photo card on the right; the button under the text opens every attraction -->
+<section class="explore-cards explore-split" id="explore-trongsa" data-header-theme="light">
+  <div class="head head--left">
+    <span class="head__script" aria-hidden="true">Discover</span>
+    <h2 class="head__title" data-split>{e.label}</h2>
   </div>
-  <div class="explore__body">
-    <a class="story" href={placePage(p.id)} aria-label={`${p.title}: view details`}>
+  <div class="place-card place-card--single" data-fade>
+    <div class="place-card__media">
       <div class="frame">
-        <Image src={p.image} alt={p.alt} widths={[900, 1400, 2000, 2600]} quality={88} sizes="(max-width: 767px) 90vw, 70vw" loading="lazy" />
+        <Image src={e.hero} alt={e.heroAlt} widths={[700, 1100, 1500]} quality={88} sizes="(max-width: 767px) 100vw, 640px" loading="lazy" />
       </div>
-    </a>
-    <div class="explore__place">
-      <span class="label" data-fade>{p.tag}</span>
-      <h3 class="title-m" data-split>{p.title}</h3>
-      {(p.details ?? [p.text]).map((t) => <p class="text" data-fade>{t}</p>)}
-      <Link href={placePage(p.id)} label="View details" />
+    </div>
+    <div class="place-card__body">
+      <p>{e.text}</p>
+      <a class="btn place-card__btn" href={e.link.href}>See all attractions</a>
     </div>
   </div>
 </section>
