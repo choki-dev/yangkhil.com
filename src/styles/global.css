@@ -940,3 +940,6 @@ a.place-card__bar:hover, a.place-card__bar:focus-visible { background: var(--nav
 @media (max-width: 767px) { .book-band .head__title { font-size: clamp(1.5rem, 6.4vw, 2rem); } }
 /* tablets: the three footer columns fit side by side */
 @media (min-width: 768px) and (max-width: 1100px) { .footer__cols { grid-template-columns: 1.35fr 1fr 1fr; gap: 32px; } }
+/* review quotes in Work Sans, upright, at a reading size */
+.review__text, .reviews__ta .widSSPQuote { font-family: var(--font-body) !important; font-style: normal !important; font-size: clamp(1rem, 1.3vw, 1.15rem) !important; line-height: 1.75 !important; }
+.review__text { max-height: calc(1.75em * 5); }
