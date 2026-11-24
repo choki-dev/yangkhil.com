@@ -274,14 +274,7 @@ export const site = {
   reviews: {
     label: 'Guest reviews',
     title: 'What our guests say',
-    // Free Google reviews: the widget ID from featurable.com (Embed > API). Reviews are pulled in when the
-    // site is built, shown in the site's own review slider, and refreshed by the daily rebuild.
-    featurableId: '',
-    // Other review sources are in src/data/reviews.ts.
-    // Tripadvisor's free widget is shown only when there are no reviews there yet
-    // (ID is the number after "-d" in the listing link); set it to '' to never show it.
-    tripadvisorId: '1159262',
-    // Replace with the resort's own listing URLs.
+    // The review cards themselves (5-star Tripadvisor reviews) are in src/data/reviews.ts.
     links: [
       { label: 'Read reviews on Google', href: 'https://www.google.com/maps/search/?api=1&query=Yangkhil+Resort+Trongsa' },
       { label: 'Read reviews on Tripadvisor', href: 'https://www.tripadvisor.com/Hotel_Review-g469432-d1159262-Reviews-Yangkhil_Resort-Trongsa_Trongsa_District.html' },

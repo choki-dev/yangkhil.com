@@ -274,68 +274,74 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
   .explore__body { grid-template-columns: 1fr; }
 }
 
-/* reviews: Google and Tripadvisor quotes, below About */
-.reviews { background: var(--stone); padding: 106px var(--gutter); }
-.reviews .head { margin-bottom: 48px; }
-.reviews__widget--tripadvisor { display: flex; justify-content: center; }
-.reviews__slider + .reviews__credit + .reviews__widget--tripadvisor, .reviews__slider + .reviews__widget--tripadvisor { margin-top: 56px; }
-/* Tripadvisor's widget adds plain HTML to the page, so it is restyled here to match the review cards */
-.reviews__widget--tripadvisor .TA_selfserveprop { width: 100%; }
-.reviews__widget--tripadvisor .widSSP { width: 100% !important; max-width: none !important; border: 0 !important; background: none !important; padding: 0 !important; font-family: var(--font-body) !important; color: var(--navy) !important; }
-.reviews__widget--tripadvisor .widSSPData { display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 20px; border: 0 !important; background: none !important; padding: 0 !important; }
-.reviews__widget--tripadvisor .widSSPClickWrap { display: none !important; }
-.reviews__widget--tripadvisor .widSSPBranding { margin: 0 !important; padding: 0 !important; border: 0 !important; }
-.reviews__widget--tripadvisor .widSSPBranding img { height: 26px !important; width: auto !important; }
-.reviews__widget--tripadvisor .widSSPComponent, .reviews__widget--tripadvisor .widSSPWrap, .reviews__widget--tripadvisor .widSSPInformation { margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
-.reviews__widget--tripadvisor .widSSPH18 { font-family: var(--font-body) !important; font-size: 1.15rem !important; font-weight: 400 !important; color: var(--navy) !important; text-decoration: none !important; }
-.reviews__widget--tripadvisor .widSSPSummary a { text-decoration: none !important; }
-.reviews__widget--tripadvisor .widSSPInformation .widSSPWrap { display: flex !important; align-items: baseline; gap: 8px; }
-.reviews__widget--tripadvisor .widSSPH11 { font-family: var(--font-body) !important; font-size: 0.85rem !important; font-weight: 400 !important; color: var(--grey) !important; }
-.reviews__widget--tripadvisor .widSSPPopIdx, .reviews__widget--tripadvisor .widSSPPopIdx * { font-family: var(--font-body) !important; font-size: 0.95rem !important; color: var(--gold) !important; font-weight: 400 !important; }
-.reviews__widget--tripadvisor .widSSPComponent.widSSPOptional { flex-basis: 100%; margin-top: 0 !important; }
-/* only the review cards are shown: hide Tripadvisor's logo, name and ranking row */
-.reviews__widget--tripadvisor .widSSPData > .widSSPBranding,
-.reviews__widget--tripadvisor .widSSPData > .widSSPComponent:not(.widSSPOptional),
-.reviews__widget--tripadvisor .widSSPData > .widSSPWrap { display: none !important; }
-.reviews__widget--tripadvisor .widSSPInformation dt, .reviews__widget--tripadvisor .widSSPWriteReview { display: none !important; }
-.reviews__widget--tripadvisor .widSSPReviews > dt { display: none !important; }
-.reviews__widget--tripadvisor .widSSPReviews, .reviews__widget--tripadvisor .widSSPOneReview { margin: 0 !important; padding: 0 !important; }
-.reviews__widget--tripadvisor .widSSPBullet { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0 !important; padding: 0 !important; list-style: none !important; }
-.reviews__widget--tripadvisor .widSSPBullet li { display: flex !important; flex-direction: column; justify-content: space-between; gap: 14px; margin: 0 !important; padding: 26px 22px 22px !important; border-radius: 12px; background: var(--white) !important; border: 1px solid rgba(165, 137, 14, 0.2); list-style: none !important; }
-.reviews__widget--tripadvisor .widSSPQuote { flex: 1; font-family: var(--font-body) !important; font-size: 1.02rem !important; line-height: 1.5 !important; color: var(--navy) !important; }
-.reviews__widget--tripadvisor .widSSPBullet li a { font-family: var(--font-body) !important; font-size: 0.85rem !important; color: var(--grey) !important; }
-.reviews__widget--tripadvisor .widSSPBullet li a:hover { color: var(--navy) !important; }
-.reviews__widget--tripadvisor .widSSPAll { display: none !important; }
-@media (max-width: 1100px) { .reviews__widget--tripadvisor .widSSPBullet { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 767px) { .reviews__widget--tripadvisor .widSSPBullet { grid-template-columns: 1fr; } }
-.reviews__credit { margin-top: 14px; text-align: center; font-size: 0.75rem; color: var(--grey); }
-.reviews__credit a { color: inherit; }
-.reviews__links { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; }
+/* reviews: Trustindex-style rows (like callofthedragonbhutan.com): overall score on the left, review cards on the right */
+.reviews { padding: 106px var(--gutter); }
+.reviews .head { margin-bottom: 56px; }
+.reviews__row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; align-items: center; max-width: 1160px; margin: 0 auto; }
+.reviews__row + .reviews__row { margin-top: 64px; }
 
-/* centred testimonial slider: one review at a time */
-.reviews__slider { position: relative; max-width: 860px; margin: 0 auto; padding: 0 64px; }
-.review { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
-.review__avatar { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; color: #fff; font-size: 1.3rem; text-transform: uppercase; }
-.review__text { font-family: var(--font-display); font-style: italic; font-size: clamp(1.2rem, 1.9vw, 1.6rem); line-height: 1.55; max-height: calc(1.55em * 5); overflow: hidden; }
-.review__text.is-open { max-height: none; }
-.review__text a { color: inherit; }
-.review__more { padding: 0; border: 0; background: none; font: inherit; font-size: 0.88rem; color: var(--grey); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.review__more:hover { color: var(--navy); }
+/* overall score */
+.reviews__score { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; color: #000; text-decoration: none; font-family: var(--font-body); }
+.reviews__verdict { font-size: 24px; font-weight: 600; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.01em; }
+.reviews__based { font-size: 14px; }
+.reviews__based strong { font-weight: 600; }
+.reviews__logo { display: block; height: auto; margin-top: 6px; }
+.reviews__logo--tripadvisor { width: 122px; }
+.reviews__logo--google { width: 98px; }
+
+/* rating icons: stars (Google) or bubbles (Tripadvisor); --fill (0–1) shows part of an icon for scores like 4.6 */
+.reviews__icons { display: inline-flex; gap: 1px; }
+.rate { position: relative; display: block; width: 17px; height: 17px; }
+.rate svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rate__on { clip-path: inset(0 calc((1 - var(--fill)) * 100%) 0 0); }
+.reviews__icons--lg { gap: 2px; }
+.reviews__icons--lg .rate { width: 32px; height: 32px; }
+.reviews__row--google .rate__off { fill: #dadce0; }
+.reviews__row--google .rate__on { fill: #f6bb06; }
+.reviews__row--tripadvisor .rate svg circle { fill: none; stroke: #00aa6c; stroke-width: 2.2; }
+.reviews__row--tripadvisor .rate__on .rate__dot { fill: #00aa6c; stroke: none; }
+
+/* review cards */
+.reviews__slider { position: relative; min-width: 0; }
+.reviews__slider .swiper { padding: 4px; margin: -4px; }
+.reviews__slider .swiper-wrapper { align-items: flex-start; }
+.review {
+  height: auto; padding: 20px; border-radius: 8px; color: #000; font-family: var(--font-body);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='240' viewBox='0 0 300 240' fill='none' stroke='%23000' stroke-opacity='.045'%3E%3Cpath d='M150 0c40 60 10 120 60 170s90 40 90 70'/%3E%3Cpath d='M170 0c40 60 10 120 60 170s70 40 70 70'/%3E%3Cpath d='M190 0c40 60 10 120 60 170s50 40 50 70'/%3E%3Cpath d='M210 0c40 60 10 120 60 170s30 40 30 70'/%3E%3Cpath d='M230 0c40 60 10 120 60 170'/%3E%3Cpath d='M130 0c40 60 10 120 60 170s110 40 110 70'/%3E%3Cpath d='M110 0c40 60 10 120 60 170s130 40 130 70'/%3E%3Cpath d='M0 120c50 10 80 60 70 120'/%3E%3Cpath d='M0 140c40 10 65 50 55 100'/%3E%3Cpath d='M0 160c30 10 50 40 40 80'/%3E%3C/svg%3E") right bottom / cover no-repeat;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.review__head { display: flex; align-items: center; gap: 15px; height: 40px; }
+.review__avatar { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; color: #fff; font-size: 1.05rem; text-transform: uppercase; }
+.review__who { flex: 1; min-width: 0; }
+.review__name { margin: 0; font-family: var(--font-body); font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: 0; text-transform: none; color: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.review__date { display: block; font-size: 13px; line-height: 1.4; color: #767676; }
+.review__source { flex: none; align-self: flex-start; display: block; width: 20px; height: 20px; }
+.review__source img, .review__source svg { display: block; width: 100%; height: 100%; }
+.review__rating { display: flex; align-items: center; gap: 7px; height: 17px; margin: 11px 0; }
+.review__verified { width: 15px; height: 15px; }
+.review__verified polygon { fill: #4b8af3; }
+.review__verified path { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.review__text { font-size: 15px; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
+.review__text.is-open { display: block; -webkit-line-clamp: unset; line-clamp: unset; }
+.review__more { margin-top: 9px; padding: 0; border: 0; background: none; font: inherit; font-size: 13.5px; line-height: 1.4; color: #767676; cursor: pointer; }
+.review__more:hover { color: #000; }
 .review__more[hidden] { display: none; }
-.review__stars { display: flex; gap: 2px; }
-.review__star { width: 15px; height: 15px; fill: var(--gold); }
-.review__star.is-off { fill: #d9d4c4; }
-.review__name { font-size: 1rem; letter-spacing: 0.12em; }
-.review__meta { margin-top: -8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-ink); }
-.review__meta a { color: inherit; }
-.reviews__arrow { position: absolute; top: 50%; z-index: 2; width: 18px; height: 34px; margin-top: -17px; padding: 0; color: var(--grey); transition: color 0.3s ease-in-out; }
-.reviews__arrow:hover { color: var(--navy); }
-.reviews__arrow svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.2; }
-.reviews__arrow--prev { left: 0; }
-.reviews__arrow--next { right: 0; }
+.reviews__arrow {
+  position: absolute; top: calc(50% - 16px); z-index: 2;
+  display: grid; place-items: center; width: 32px; height: 32px; padding: 0;
+  border: 1px solid #ddd; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12); cursor: pointer;
+}
+.reviews__arrow svg { width: 9px; height: 14px; fill: none; stroke: #555; stroke-width: 1.6; }
+.reviews__arrow.swiper-button-disabled { display: none; }
+.reviews__arrow--prev { left: -16px; }
+.reviews__arrow--next { right: -16px; }
+@media (max-width: 900px) {
+  .reviews__row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}
 @media (max-width: 767px) {
   .reviews { padding: 64px var(--gutter); }
-  .reviews__slider { padding: 0 32px; }
+  .reviews__arrow--prev { left: -8px; }
+  .reviews__arrow--next { right: -8px; }
 }
 
 /* ---------- inner pages ---------- */
@@ -767,15 +773,6 @@ html.js [data-split], html.js [data-fade] { visibility: hidden; }
 /* square corners on the contact card, to match the rest of the page */
 .contact__card { border-radius: 0; }
 
-/* Tripadvisor quotes shown like the testimonial slider: one centred italic quote at a time */
-.reviews__ta { position: relative; max-width: 860px; margin: 0 auto; padding: 0 64px; }
-.reviews__ta .widSSPBullet { display: flex !important; gap: 0 !important; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
-.reviews__ta .widSSPBullet::-webkit-scrollbar { display: none; }
-.reviews__ta .widSSPBullet li { flex: 0 0 100%; scroll-snap-align: center; align-items: center; justify-content: center !important; text-align: center; padding: 8px 12px !important; border: 0 !important; border-radius: 0; background: none !important; }
-.reviews__ta .widSSPQuote { flex: none; font-family: var(--font-display) !important; font-style: italic; font-size: clamp(1.2rem, 1.9vw, 1.6rem) !important; line-height: 1.55 !important; }
-.reviews__ta .widSSPBullet li a { font-size: 0.78rem !important; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-ink) !important; }
-@media (max-width: 767px) { .reviews__ta { padding: 0 32px; } }
-.reviews__ta:not(:has(.widSSPBullet li + li)) .reviews__arrow { display: none; }
 
 /* services grid (home and Amenities page): tall photo tiles, four to a row */
 .tiles-section--services { background: #f8f6f1; }
@@ -862,8 +859,8 @@ a.place-card__bar:hover, a.place-card__bar:focus-visible { background: var(--nav
 .book-band--left .head__script { left: -0.15em; transform: rotate(-6deg); }
 .book-band--left .head__title { max-width: 16em; font-size: clamp(1.8rem, 2.8vw, 2.6rem); }
 .book-band--left .frame::after { background: linear-gradient(90deg, rgba(24, 36, 50, 0.72), rgba(24, 36, 50, 0.4)); }
-/* reviews sit after Explore Trongsa (stone), so they use white to keep the sections apart */
-.reviews { background: var(--white); }
+/* reviews sit after Explore Trongsa (stone): light grey behind the white review cards, as in the Trustindex widget */
+.reviews { background: #ececec; }
 .book-band--left .head { padding-top: 0; }
 /* smaller hero text */
 .hero h1 { font-size: clamp(2.4rem, 5.2vw, 4.8rem); }
@@ -912,11 +909,7 @@ a.place-card__bar:hover, a.place-card__bar:focus-visible { background: var(--nav
 }
 
 /* home page on phones and tablets */
-/* Tripadvisor quotes: the widget's wrapper grew wider than the slider and cut the text off */
-.reviews__ta .widSSPComponent.widSSPOptional { min-width: 0; width: 100%; }
 @media (max-width: 767px) {
-  .reviews__ta { padding: 0 26px; }
-  .reviews__arrow { width: 14px; height: 28px; margin-top: -14px; }
   /* booking bar: dates side by side, guests and button full width */
   .booking-bar__form { grid-template-columns: 1fr 1fr; gap: 18px 16px; padding: 20px; }
   .booking-bar__guests, .booking-bar__submit { grid-column: 1 / -1; }
@@ -940,6 +933,3 @@ a.place-card__bar:hover, a.place-card__bar:focus-visible { background: var(--nav
 @media (max-width: 767px) { .book-band .head__title { font-size: clamp(1.5rem, 6.4vw, 2rem); } }
 /* tablets: the three footer columns fit side by side */
 @media (min-width: 768px) and (max-width: 1100px) { .footer__cols { grid-template-columns: 1.35fr 1fr 1fr; gap: 32px; } }
-/* review quotes in Work Sans, upright, at a reading size */
-.review__text, .reviews__ta .widSSPQuote { font-family: var(--font-body) !important; font-style: normal !important; font-size: clamp(1rem, 1.3vw, 1.15rem) !important; line-height: 1.75 !important; }
-.review__text { max-height: calc(1.75em * 5); }
